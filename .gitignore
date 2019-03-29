@@ -1,3 +1,5 @@
+_related/
+
 # Miscellaneous
 *.class
 *.log
@@ -78,3 +80,5 @@
 将删除 pubspec.lock
 将删除 pubspec.yaml
 将删除 test/
+将删除 _related/
+将删除 android/app/src/main/java/io/
