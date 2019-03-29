@@ -15,6 +15,15 @@ final List<Girl> cards = [
   Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
   Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
   Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
+  Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
+  Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
+  Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
+  Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
+  Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
+  Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
+  Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
+  Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
+  Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
 ];
 
 class DragLikePage extends StatefulWidget {
@@ -152,7 +161,9 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
             leading: new CircleAvatar(
               child: new Icon(Icons.timer),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, UIRoute.focusTime);
+            },
           ),
           ListTile(
             title: Text('呼叫Life'),

@@ -20,7 +20,7 @@ class _ExpandedAppBarState extends State<ExpandedAppBarPage> {
             actions: <Widget>[
               _buildAction(),
             ],
-            title: Text('汇智圈子', style: TextStyle(color: Colors.black87)),
+            title: Text('迷茫boy的圈子', style: TextStyle(color: Colors.black87)),
             backgroundColor: Theme.of(context).accentColor,
             expandedHeight: 220.0,
             flexibleSpace: FlexibleSpaceBar(
@@ -34,7 +34,7 @@ class _ExpandedAppBarState extends State<ExpandedAppBarPage> {
             pinned: pinned,
           ),
           SliverFixedExtentList(
-            itemExtent: 78.0,
+            itemExtent: 130,
             delegate: SliverChildListDelegate(
               circlePosts.map((product) {
                 return _buildItem(product);

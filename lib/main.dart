@@ -4,6 +4,7 @@ import 'page/choose_labels.dart';
 import 'page/choose_peoples.dart';
 import 'page/chat.dart';
 import 'page/circle.dart';
+import 'page/focus_time.dart';
 import 'widgets.dart';
 import 'widget/circle_progress_bar.dart';
 import 'extends/draglikes/drag_like.dart';
@@ -34,6 +35,7 @@ class MainApp extends StatelessWidget {
         UIRoute.choosePeoples: (context) => ChoosePeoples(),
         UIRoute.chat: (context) => Chat(),
         UIRoute.circle: (context) => SmartCircle(),
+        UIRoute.focusTime: (context) => FocusTime(),
       },
     );
   }
