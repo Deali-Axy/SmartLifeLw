@@ -1,4 +1,4 @@
-package com.example.smart_life_lw;
+package cn.deali.smart_life_lw;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

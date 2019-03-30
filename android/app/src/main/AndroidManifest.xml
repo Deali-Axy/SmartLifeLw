@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.smart_life_lw">
+    package="cn.deali.smart_life_lw">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -9,7 +9,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="汇智Life"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/icons8_life_cycle_64">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
