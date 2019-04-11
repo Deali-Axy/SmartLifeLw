@@ -1,4 +1,5 @@
 _related/
+android/key.properties
 
 # Miscellaneous
 *.class
@@ -82,3 +83,4 @@ _related/
 将删除 test/
 将删除 _related/
 将删除 android/app/src/main/java/io/
+将删除 android/key.properties
