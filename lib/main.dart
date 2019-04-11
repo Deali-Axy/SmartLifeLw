@@ -158,7 +158,10 @@ class _AppPageState extends State<_AppPage> {
                   padding: EdgeInsets.all(5),
                   child: ListTile(
                     leading: Image.asset(
-                        'images/weather/${_weatherInfo.iconName}.png'),
+                      'images/weather/${_weatherInfo.iconName}.png',
+                      fit: BoxFit.fitHeight,
+                      height: 50,
+                    ),
                     title: Text(
                         '湛江天气：${_weatherInfo.temperature.roundToDouble()} ℃'),
                     subtitle: Text(_weatherInfo.summary),
