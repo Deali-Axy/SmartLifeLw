@@ -1,30 +1,16 @@
 import 'package:flutter/material.dart';
 import 'drag_like_stack.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:smart_life_lw/network/sina_news.dart';
 import 'package:smart_life_lw/routes.dart';
 import 'package:smart_life_lw/config.dart' as Config;
 
-class Girl {
+class NewsCard {
   final String description;
-  final String asset;
+  final String imgUrl;
 
-  Girl(this.description, this.asset);
+  NewsCard(this.description, this.imgUrl);
 }
-
-final List<Girl> cards = [
-  Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
-  Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
-  Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
-  Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
-  Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
-  Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
-  Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
-  Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
-  Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
-  Girl('热点新闻：习近平2019首访赴欧洲三国纪实 展现中国姿态', 'images/girl01.png'),
-  Girl('今日天气：北京:多云 南风微风,最低气温2度，最高气温11度', 'images/girl02.png'),
-  Girl('最新资讯：市场监管总局：重点查处药品、保健食品等虚假广告', 'images/girl03.png'),
-];
 
 class DragLikePage extends StatefulWidget {
   @override
@@ -60,6 +46,12 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
   Color get rightIconColor => slideDirection == SlideDirection.right
       ? Color.lerp(Color(0xFFFF80AB), Color(0xFFC51162), position)
       : defaultIconColor;
+
+  List<NewsCard> cards = [
+    NewsCard('测试', '123'),
+    NewsCard('测试', '123'),
+    NewsCard('测试', '123'),
+  ];
 
   void setAboveIndex() {
     if (aboveIndex < cards.length - 1) {
@@ -118,6 +110,16 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
   void dispose() {
     super.dispose();
     controller.dispose();
+  }
+
+  _refresh() async {
+    var newsList = SinaNews.getAllNews();
+    cards.clear();
+    for (NewsObject newsItem in newsList) {
+      cards.add(NewsCard(
+          newsItem.title, newsItem.pics.length > 0 ? newsItem.pics[0] : ''));
+    }
+    setState(() {});
   }
 
   @override
@@ -203,6 +205,9 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(Config.TITLE),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.refresh), onPressed: () => _refresh())
+        ],
       ),
       drawer: drawer,
       body: Container(
@@ -251,12 +256,12 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildChooseView(Girl girl) {
+  Widget _buildChooseView(NewsCard girl) {
     return Stack(
       children: <Widget>[
         Positioned(
           child: Image.network(
-            'http://lorempixel.com/400/500/business?id=${girl.asset}',
+            'http://lorempixel.com/400/500/business?id=${girl.imgUrl}',
             fit: BoxFit.cover,
           ),
           left: 35.0,

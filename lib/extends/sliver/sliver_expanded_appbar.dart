@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_life_lw/routes.dart';
 import 'package:smart_life_lw/extends/sharedelement/product_list.dart';
 
 class ExpandedAppBarPage extends StatefulWidget {
@@ -7,12 +8,14 @@ class ExpandedAppBarPage extends StatefulWidget {
 }
 
 class _ExpandedAppBarState extends State<ExpandedAppBarPage> {
+  BuildContext _context;
   bool floating = false;
   bool snap = false;
   bool pinned = false;
 
   @override
   Widget build(BuildContext context) {
+    _context=context;
     return Material(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -124,6 +127,9 @@ class _ExpandedAppBarState extends State<ExpandedAppBarPage> {
                       ),
                     ],
                   ),
+                  onTap: (){
+                    Navigator.pushNamed(_context, UIRoute.circle_content);
+                  },
                 ),
               ],
             ),
