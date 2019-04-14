@@ -1,5 +1,6 @@
 _related/
 android/key.properties
+.metadata
 
 # Miscellaneous
 *.class

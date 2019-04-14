@@ -46,7 +46,7 @@ class SliverListPage extends StatelessWidget {
                 width: 70.0,
                 height: 70.0,
                 child: Image.asset(
-                  product.asset,
+                  product.summary,
                   fit: BoxFit.cover,
                 ),
               ),

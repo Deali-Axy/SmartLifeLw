@@ -4,39 +4,39 @@ import 'package:smart_life_lw/extends/sharedelement/product_list.dart';
 final List<ProductItem> _products = [
   ProductItem(
     name: 'Bueno Chocolate',
-    asset: 'images/food01.jpeg',
+    summary: 'images/food01.jpeg',
   ),
   ProductItem(
     name: 'Chocolate with berries',
-    asset: 'images/food02.jpeg',
+    summary: 'images/food02.jpeg',
   ),
   ProductItem(
     name: 'Trumoo Candies',
-    asset: 'images/food03.jpeg',
+    summary: 'images/food03.jpeg',
   ),
   ProductItem(
     name: 'Choco-coko',
-    asset: 'images/food04.jpeg',
+    summary: 'images/food04.jpeg',
   ),
   ProductItem(
     name: 'Chocolate tree',
-    asset: 'images/food05.jpeg',
+    summary: 'images/food05.jpeg',
   ),
   ProductItem(
     name: 'Chocolate',
-    asset: 'images/food06.jpeg',
+    summary: 'images/food06.jpeg',
   ),
   ProductItem(
     name: 'Bueno Chocolate',
-    asset: 'images/food01.jpeg',
+    summary: 'images/food01.jpeg',
   ),
   ProductItem(
     name: 'Choco-coko',
-    asset: 'images/food04.jpeg',
+    summary: 'images/food04.jpeg',
   ),
   ProductItem(
     name: 'Chocolate tree',
-    asset: 'images/food05.jpeg',
+    summary: 'images/food05.jpeg',
   ),
 ];
 
@@ -79,7 +79,7 @@ class SliverGridPage extends StatelessWidget {
                   width: 65.0,
                   height: 65.0,
                   child: Image.asset(
-                    product.asset,
+                    product.summary,
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -1,16 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:smart_life_lw/network/circle_post.dart';
 
 class SmartCircleContent extends StatefulWidget {
+  final CirclePost post;
+  final List<CirclePostComment> comments;
+
+  SmartCircleContent({Key key, @required this.post, @required this.comments})
+      : super(key: key);
+
   @override
-  _SmartCircleContentState createState() => _SmartCircleContentState();
+  _SmartCircleContentState createState() =>
+      _SmartCircleContentState(post: post, comments: comments);
 }
 
 class _SmartCircleContentState extends State<SmartCircleContent> {
+  CirclePost _post;
+  List<CirclePostComment> _comments = List();
+
+  List<Widget> _widgets = List();
+
+  _SmartCircleContentState({@required post, @required comments}) {
+    _post = post;
+    _comments = comments;
+    _widgets = [
+      ListTile(
+        leading: Image.network(
+          'http://lorempixel.com/40/40?id=${_post.id}',
+          fit: BoxFit.fitWidth,
+          width: 40,
+        ),
+        title: Text(_post.nickname),
+        subtitle: Text(_post.time),
+      ),
+      ListTile(
+        title: Text(_post.title),
+        subtitle: Text(_post.biography),
+      ),
+      Divider(height: 10),
+    ];
+
+    for (var i = 0; i < _comments.length; i++) {
+      var item = _comments[i];
+      _widgets.add(_SimpleComment(
+        username: item.nickname,
+        time: item.time,
+        content: item.biography,
+        index: i + 1,
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('内容标题'),
+        title: Text(_post.title),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.refresh), onPressed: null)
         ],
@@ -18,21 +62,7 @@ class _SmartCircleContentState extends State<SmartCircleContent> {
       body: Container(
         padding: EdgeInsets.all(5),
         child: ListView(
-          children: <Widget>[
-            ListTile(
-              leading: Image.network('http://lorempixel.com/40/40/'),
-              title: Text('用户名称'),
-              subtitle: Text('2019-04-10 17:18'),
-            ),
-            ListTile(
-              title: Text('内容标题。。。。'),
-              subtitle: Text('内容内容'),
-            ),
-            Divider(
-              height: 10,
-            ),
-            _SimpleComment(username: '用户名',time: '2019-04-10 17:00',content: '评论内容',)
-          ],
+          children: _widgets,
         ),
       ),
     );
@@ -40,11 +70,12 @@ class _SmartCircleContentState extends State<SmartCircleContent> {
 }
 
 class _SimpleComment extends StatelessWidget {
-  String username;
-  String time;
-  String content;
+  final String username;
+  final String time;
+  final String content;
+  final int index;
 
-  _SimpleComment({this.username, this.time, this.content});
+  _SimpleComment({this.username, this.time, this.content, this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +84,20 @@ class _SimpleComment extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
-          leading: Image.network('http://lorempixel.com/40/40/'),
+          leading: Image.network(
+            'http://lorempixel.com/40/40?id=$username',
+            fit: BoxFit.fitWidth,
+            width: 40,
+          ),
           title: Text(username),
           subtitle: Text(time),
-          trailing: Text('1楼'),
+          trailing: Text('$index楼'),
         ),
         Container(
           padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: Text(content),
         ),
+        Divider(height: 10),
       ],
     );
   }

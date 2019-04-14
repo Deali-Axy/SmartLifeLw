@@ -173,7 +173,7 @@ class SliverBoxPage extends StatelessWidget {
                   width: 65.0,
                   height: 65.0,
                   child: Image.asset(
-                    product.asset,
+                    product.summary,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -212,7 +212,7 @@ class SliverBoxPage extends StatelessWidget {
                     width: 65.0,
                     height: 65.0,
                     child: Image.asset(
-                      product.asset,
+                      product.summary,
                       fit: BoxFit.cover,
                     ),
                   ),

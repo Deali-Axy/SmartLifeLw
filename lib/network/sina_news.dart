@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:smart_life_lw/utils/http.dart';
 
-class NewsObject {
+class SinaNewsObject {
   String id;
   String title;
   String stitle;
@@ -15,7 +15,7 @@ class NewsObject {
   String source;
   String summary;
 
-  NewsObject(
+  SinaNewsObject(
       {this.id,
       this.title,
       this.stitle,
@@ -34,14 +34,14 @@ class NewsObject {
   }
 }
 
-class SinaNews {
+class SinaNewsUtils {
   static getAllNews() async {
     String responseStr =
         await get('http://interface.sina.cn/wap_api/layout_col.d.json?');
-    var newsList = List<NewsObject>();
+    var newsList = List<SinaNewsObject>();
     var jsonMap = jsonDecode(responseStr);
     for (var newsItem in jsonMap['result']['data']['list']) {
-      var newsObj = NewsObject(
+      var newsObj = SinaNewsObject(
           id: newsItem['_id'],
           title: newsItem['title'],
           stitle: newsItem['stitle'],
@@ -62,5 +62,26 @@ class SinaNews {
       print('Hint News: $newsObj');
     }
     return newsList;
+  }
+}
+
+class SinaNewsManager{
+  List<SinaNewsObject> newsList = List();
+  int currentIndex = 0;
+
+  init() async {
+    this.newsList = await SinaNewsUtils.getAllNews();
+  }
+
+  getNext() {
+    if (newsList.length == 0) {
+      print('新浪新闻列表里面根本没东西！');
+      return null;
+    }
+    var index = currentIndex++;
+    if (currentIndex >= newsList.length) {
+      currentIndex = 0;
+    }
+    return newsList[index];
   }
 }

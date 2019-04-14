@@ -113,9 +113,9 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
   }
 
   _refresh() async {
-    var newsList = SinaNews.getAllNews();
+    var newsList = SinaNewsUtils.getAllNews();
     cards.clear();
-    for (NewsObject newsItem in newsList) {
+    for (SinaNewsObject newsItem in newsList) {
       cards.add(NewsCard(
           newsItem.title, newsItem.pics.length > 0 ? newsItem.pics[0] : ''));
     }

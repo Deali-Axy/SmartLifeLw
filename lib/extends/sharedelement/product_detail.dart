@@ -37,7 +37,7 @@ class _ProductDetailState extends State<ProductDetailPage> {
                     width: 60.0,
                     height: 60.0,
                     child: Image.asset(
-                      widget.product.asset,
+                      widget.product.summary,
                       fit: BoxFit.cover,
                     ),
                   ),

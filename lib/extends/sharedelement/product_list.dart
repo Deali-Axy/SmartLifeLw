@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'product_detail.dart';
+import 'dart:convert';
+import 'package:smart_life_lw/utils/http.dart';
 
 class ProductItem {
   final String name;
   final String tag;
-  final String asset;
+  final String summary;
   final int stock;
   final double price;
 
   ProductItem({
     this.name,
     this.tag,
-    this.asset,
+    this.summary,
     this.stock,
     this.price,
   });
@@ -21,37 +23,37 @@ final List<ProductItem> circlePosts = [
   ProductItem(
       name: '我好想做打代码的工作 但是家人跟我说做公务员更加稳定 我究竟要如何选择？',
       tag: '1',
-      asset: '打代码是我高中一直以来的兴趣，却得不到家人的支持 我要怎么办',
+      summary: '打代码是我高中一直以来的兴趣，却得不到家人的支持 我要怎么办',
       stock: 1,
       price: 71.0),
   ProductItem(
       name: '刚大学毕业 大学四年基本都是混过来的 我现在很迷茫 该怎么办',
       tag: '2',
-      asset: '很后悔大学期间没有努力学习 现在不知道该怎么办了',
+      summary: '很后悔大学期间没有努力学习 现在不知道该怎么办了',
       stock: 1,
       price: 71.0),
   ProductItem(
       name: '老板交给我的任务我已经努力去做了，但每次还是被老板批评，我该怎么办？',
       tag: '3',
-      asset: '我已经尽自己努力去完成了 但还是做不好 我好迷茫',
+      summary: '我已经尽自己努力去完成了 但还是做不好 我好迷茫',
       stock: 1,
       price: 71.0),
   ProductItem(
       name: '我今天高二 刚转学 跟新的同学完全说不上话 每天一个人',
       tag: '4',
-      asset: '完全融入不了新集体 我好迷茫',
+      summary: '完全融入不了新集体 我好迷茫',
       stock: 1,
       price: 71.0),
   ProductItem(
       name: '研究生导师交给我一个任务 说我肯定可以完成 但是我发现我根本完不成',
       tag: '5',
-      asset: '5.但也不好意思拒绝 我该怎么办 导师那么相信我 我却完成不了 我该怎么办',
+      summary: '5.但也不好意思拒绝 我该怎么办 导师那么相信我 我却完成不了 我该怎么办',
       stock: 1,
       price: 71.0),
   ProductItem(
       name: '我今天大二 身边的同学都加了社团之类的团体 我只是每天按时去上课',
       tag: '6',
-      asset: '6.感觉找不到未来的方向 大家都有事情做 我没有什么具体的事做 我该怎么办',
+      summary: '6.感觉找不到未来的方向 大家都有事情做 我没有什么具体的事做 我该怎么办',
       stock: 1,
       price: 71.0),
 ];
@@ -66,6 +68,28 @@ class ProductListPage extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductListPage> {
+  List<ProductItem> circlePosts = List();
+
+  _refresh() async {
+    var url = 'http://47.106.203.63:8080/HZlife/circleList/1';
+    var responseStr = await get(url);
+    var productList = List<ProductItem>();
+    Map jsonMap = jsonDecode(responseStr);
+
+    for (Map item in jsonMap['data']) {
+      productList.add(ProductItem(
+        name: item['title'],
+        summary: item['biography'],
+        tag: item['id'].toString(),
+        stock: 1,
+        price: 71.0,
+      ));
+    }
+    setState(() {
+      circlePosts = productList;
+    });
+  }
+
   Widget _buildSearch() {
     return Hero(
         tag: 'search',
@@ -205,7 +229,7 @@ class _ProductListState extends State<ProductListPage> {
                 width: 70.0,
                 height: 70.0,
                 child: Image.asset(
-                  product.asset,
+                  product.summary,
                   fit: BoxFit.cover,
                 ),
               ),

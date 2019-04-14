@@ -120,7 +120,7 @@ class _ExpandedAppBarState extends State<ExpandedAppBarPage> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(product.asset),
+                      Text(product.summary),
                       Text(
                         '${DateTime.now().year}年 ${DateTime.now().month}月 ${DateTime.now().day}日',
                         style: TextStyle(fontSize: 10),
