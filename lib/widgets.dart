@@ -64,8 +64,8 @@ class HomeDrawer extends StatelessWidget {
       /* padding置为0 */
       child: new Stack(children: <Widget>[
         /* 用stack来放背景图片 */
-        new Image.asset(
-          'images/p_h_r_600.png',
+        new Image.network(
+          'http://lorempixel.com/600/600/',
           fit: BoxFit.fill,
           width: double.infinity,
         ),
@@ -82,7 +82,8 @@ class HomeDrawer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 new CircleAvatar(
-                  backgroundImage: AssetImage('images/pic1.jpg'),
+                  backgroundImage:
+                      NetworkImage('http://lorempixel.com/100/100/'),
                   radius: 35.0,
                 ),
                 new Container(
@@ -112,7 +113,6 @@ class HomeDrawer extends StatelessWidget {
       ]),
     );
 
-    // 左侧抽屉的用户头像
     Widget userHeader = new UserAccountsDrawerHeader(
       accountName: new Text('汇智用户'),
       accountEmail: new Text('空山新雨后，天气晚来秋'),
@@ -129,7 +129,7 @@ class HomeDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          header, // 可在这里替换自定义的header
+          userHeader, // 可在这里替换自定义的header
           ListTile(
             title: Text('选择标签'),
             leading: new CircleAvatar(
