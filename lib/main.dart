@@ -5,8 +5,8 @@ import 'page/choose_labels.dart';
 import 'page/choose_peoples.dart';
 import 'page/chat.dart';
 import 'page/circle.dart';
-import 'page/circle_content.dart';
 import 'page/focus_time.dart';
+import 'page/login.dart';
 import 'package:smart_life_lw/widget/news_card.dart';
 import 'package:smart_life_lw/widget/weather_card.dart';
 import 'package:smart_life_lw/widget/hitokoto_card.dart';
@@ -26,8 +26,8 @@ class MainApp extends StatelessWidget {
         dialogBackgroundColor: Colors.grey[50],
         primaryColorBrightness: Brightness.light,
         buttonColor: Colors.blue,
-        iconTheme: new IconThemeData(
-          color: Colors.grey[700],
+        iconTheme: IconThemeData(
+          color: Colors.grey,
         ),
         hintColor: Colors.grey[400],
       ),
@@ -38,6 +38,7 @@ class MainApp extends StatelessWidget {
         UIRoute.chat: (context) => Chat(),
         UIRoute.circle: (context) => SmartCircle(),
         UIRoute.focusTime: (context) => FocusTime(),
+        UIRoute.login: (context) => LoginPage(),
       },
     );
   }
@@ -57,9 +58,16 @@ class _AppPage extends StatefulWidget {
 
 class _AppPageState extends State<_AppPage> {
   double progress = 0.0;
+  ScrollController _scrollController;
 
   @override
   Widget build(BuildContext context) {
+    // 滚动到底部
+    _scrollController?.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text('汇智Life ${Config.GlobalConfig.focusMode ? '(专注时间)' : ''}'),
@@ -69,6 +77,7 @@ class _AppPageState extends State<_AppPage> {
         child: Container(
           padding: EdgeInsets.all(20),
           child: ListView(
+            controller: _scrollController,
             children: <Widget>[
               WeatherCard(),
               HitokotoCard(),

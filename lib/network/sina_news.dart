@@ -3,7 +3,7 @@ import 'package:smart_life_lw/utils/http.dart';
 
 class SinaNewsObject {
   String id;
-  String title;
+  String title = '';
   String stitle;
   String url;
   String pc_url;
@@ -52,7 +52,7 @@ class SinaNewsUtils {
           cdateTime: newsItem['cdateTime'],
           source: newsItem['source'],
           summary: newsItem['summary']);
-      if (newsItem['allPics']['total'] >= 1) {
+      if (int.parse(newsItem['allPics']['total'].toString()) >= 1) {
         for (var picItem in newsItem['allPics']['pics']) {
           newsObj.pics.add(picItem['imgurl']);
           print('Hint Picture: ${picItem["imgurl"]}');
@@ -65,7 +65,7 @@ class SinaNewsUtils {
   }
 }
 
-class SinaNewsManager{
+class SinaNewsManager {
   List<SinaNewsObject> newsList = List();
   int currentIndex = 0;
 

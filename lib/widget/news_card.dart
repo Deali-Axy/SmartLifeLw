@@ -56,6 +56,13 @@ class _NewsCardState extends State<NewsCard> {
       _currentNews = _newsManager.getNext();
     } else {
       SinaNewsObject sinaNews = _sinaNewsManager.getNext();
+      if (sinaNews == null) {
+        Scaffold.of(_context).showSnackBar(SnackBar(
+          content: Text('加载新闻资讯失败！'),
+          duration: Duration(milliseconds: 500),
+        ));
+        return;
+      }
       _currentNews = HomeNews(
           title: sinaNews.title,
           synopsis: sinaNews.summary,

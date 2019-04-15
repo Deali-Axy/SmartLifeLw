@@ -52,7 +52,7 @@ packages:
       name: image_picker
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.3"
+    version: "0.5.3+1"
   matcher:
     dependency: transitive
     description:
@@ -73,7 +73,7 @@ packages:
       name: oktoast
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   path:
     dependency: transitive
     description:

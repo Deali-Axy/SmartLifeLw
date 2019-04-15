@@ -5,4 +5,5 @@ abstract class UIRoute {
   static const String circle = 'circle';
   static const String circle_content = 'circle_content';
   static const String focusTime = 'focus_time';
+  static const String login = 'login';
 }
