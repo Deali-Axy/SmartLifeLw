@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:smart_life_lw/config.dart';
 import 'package:smart_life_lw/network/circle_post.dart';
 import 'package:smart_life_lw/page/circle_content.dart';
+import 'package:groovin_material_icons/groovin_material_icons.dart';
+import 'package:smart_life_lw/routes.dart';
 
-/// todo 定义新的post类
-/// todo 使用map方法把posts列表导出
-/// todo 接上后台的接口
 class SmartCircle extends StatefulWidget {
   @override
   _SmartCircleState createState() => _SmartCircleState();
@@ -28,7 +27,6 @@ class _SmartCircleState extends State<SmartCircle> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-
     return Material(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -40,21 +38,46 @@ class _SmartCircleState extends State<SmartCircle> {
                     _refresh();
                   })
             ],
-            title: Text('${GlobalConfig.selectedCircleName}的圈子',
-                style: TextStyle(color: Colors.black87)),
+            title: GestureDetector(
+              child: Row(
+                children: <Widget>[
+                  Text('${GlobalConfig.selectedCircleName}的圈子',
+                      style: TextStyle(color: Colors.black87)),
+                  Icon(Icons.arrow_drop_down)
+                ],
+              ),
+              onTap: () {
+                Navigator.pushReplacementNamed(context, UIRoute.choosePeoples);
+              },
+            ),
             backgroundColor: Theme.of(context).accentColor,
-            expandedHeight: 220.0,
+            expandedHeight: 200.0,
             flexibleSpace: FlexibleSpaceBar(
-//              background: Image.network(
-//                  'http://lorempixel.com/320/213/sports?time=${DateTime.now().toString()}',
-//                  fit: BoxFit.cover),
-              background: Image.asset('images/food06.jpeg', fit: BoxFit.cover),
+              background: Stack(
+                children: <Widget>[
+                  Image.asset(
+                    'images/food06.jpeg',
+                    fit: BoxFit.fill,
+                    width: double.infinity,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 190, left: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(GroovinMaterialIcons.message_bulleted),
+                        Text('帖子数：${circlePosts.length}')
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           SliverList(
             delegate: SliverChildListDelegate(
-              circlePosts.map((post) {
-                return _buildItem(post);
+              circlePosts.map((p) {
+                return _buildItem(p);
               }).toList(),
             ),
           ),
@@ -67,7 +90,7 @@ class _SmartCircleState extends State<SmartCircle> {
     return Card(
       child: ListTile(
         leading: Image(
-            image: NetworkImage('http://lorempixel.com/45/45?id=${post.id}')),
+            image: NetworkImage('http://lorempixel.com/40/40?id=${post.id}')),
         title: Text(post.title),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

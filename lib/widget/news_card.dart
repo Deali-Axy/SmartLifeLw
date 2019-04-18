@@ -57,10 +57,12 @@ class _NewsCardState extends State<NewsCard> {
     } else {
       SinaNewsObject sinaNews = _sinaNewsManager.getNext();
       if (sinaNews == null) {
-        Scaffold.of(_context).showSnackBar(SnackBar(
-          content: Text('加载新闻资讯失败！'),
-          duration: Duration(milliseconds: 500),
-        ));
+        if (_context != null)
+          Scaffold.of(_context).showSnackBar(SnackBar(
+            content: Text('加载新闻资讯失败！'),
+            duration: Duration(milliseconds: 500),
+          ));
+
         return;
       }
       _currentNews = HomeNews(
@@ -73,8 +75,10 @@ class _NewsCardState extends State<NewsCard> {
       title = _currentNews.title;
       summary = _currentNews.synopsis;
       picUrl = _currentNews.bannerUrl;
+      print('刷新新闻卡片！');
       setState(() {});
-    }
+    }else
+      print('没有新闻可以刷新！');
   }
 
   _like() {

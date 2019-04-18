@@ -54,7 +54,7 @@ class _SmartCircleContentState extends State<SmartCircleContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_post.title),
+        title: Text('帖子详情'),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.refresh), onPressed: null)
         ],

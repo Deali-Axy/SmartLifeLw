@@ -7,6 +7,10 @@ import 'page/chat.dart';
 import 'page/circle.dart';
 import 'page/focus_time.dart';
 import 'page/login.dart';
+import 'page/user_home.dart';
+import 'page/edit_profile.dart';
+import 'extends/login_page.dart' as ExtendsLogin;
+import 'extends/sign_up_page.dart' as ExtendsSignUp;
 import 'package:smart_life_lw/widget/news_card.dart';
 import 'package:smart_life_lw/widget/weather_card.dart';
 import 'package:smart_life_lw/widget/hitokoto_card.dart';
@@ -39,6 +43,10 @@ class MainApp extends StatelessWidget {
         UIRoute.circle: (context) => SmartCircle(),
         UIRoute.focusTime: (context) => FocusTime(),
         UIRoute.login: (context) => LoginPage(),
+        UIRoute.login_page: (ctx) => ExtendsLogin.LoginPage(),
+        UIRoute.sign_up_page: (ctx) => ExtendsSignUp.SignUpPage(),
+        UIRoute.user_home: (ctx) => UserHomePage(),
+        UIRoute.edit_profile: (ctx) => EditProfilePage(),
       },
     );
   }

@@ -55,11 +55,11 @@ class SinaNewsUtils {
       if (int.parse(newsItem['allPics']['total'].toString()) >= 1) {
         for (var picItem in newsItem['allPics']['pics']) {
           newsObj.pics.add(picItem['imgurl']);
-          print('Hint Picture: ${picItem["imgurl"]}');
+//          print('Hint Picture: ${picItem["imgurl"]}');
         }
       }
       newsList.add(newsObj);
-      print('Hint News: $newsObj');
+//      print('Hint News: $newsObj');
     }
     return newsList;
   }

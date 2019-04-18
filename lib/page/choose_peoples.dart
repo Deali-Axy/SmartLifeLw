@@ -40,28 +40,36 @@ class _ChoosePeoplesState extends State<ChoosePeoples> {
           IconButton(
               icon: Icon(Icons.check),
               onPressed: () {
-                Navigator.pop(_context);
-                Navigator.pushNamed(_context, UIRoute.circle);
+                Navigator.pushReplacementNamed(_context, UIRoute.circle);
               })
         ],
       ),
       body: Builder(builder: (BuildContext context) {
         _context = context;
-        return ListView(
-          children: circleInfo.map((dict) {
-            return RadioListTile(
-              value: circleInfo.indexOf(dict),
-              groupValue: _groupValue,
-              onChanged: _radioChange,
-              title: Text(dict['name']),
-              subtitle: Text(dict['summary']),
-              secondary: Icon(Icons.account_circle),
-              controlAffinity: ListTileControlAffinity.trailing,
-              activeColor: Colors.redAccent,
-            );
-          }).toList(),
+        return RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: ListView(
+            children: circleInfo.map((dict) {
+              return RadioListTile(
+                value: circleInfo.indexOf(dict),
+                groupValue: _groupValue,
+                onChanged: _radioChange,
+                title: Text(dict['name']),
+                subtitle: Text(dict['summary']),
+                secondary: Icon(Icons.account_circle),
+                controlAffinity: ListTileControlAffinity.trailing,
+                activeColor: Colors.redAccent,
+              );
+            }).toList(),
+          ),
         );
       }),
     );
+  }
+
+  Future<Null> _onRefresh() async {
+    await Future.delayed(Duration(seconds: 3), () {
+      print('选择群体下拉刷新');
+    });
   }
 }

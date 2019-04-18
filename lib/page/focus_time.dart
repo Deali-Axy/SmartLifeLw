@@ -26,101 +26,95 @@ class _FocusTimeState extends State<FocusTime> {
               })
         ],
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                child: GlobalConfig.focusMode
-                    ? Text('已经进入专注时间')
-                    : Text('还没有进入专注时间'),
-              ),
+      body: ListView(
+        padding: EdgeInsets.all(10),
+        children: <Widget>[
+          Center(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+              child:
+                  GlobalConfig.focusMode ? Text('已经进入专注时间') : Text('还没有进入专注时间'),
             ),
-            Image.asset(
-              'images/focus_mode.jpg',
-              fit: BoxFit.fitHeight,
-              height: 300,
+          ),
+          Image.asset('images/focus_mode.jpg',
+              fit: BoxFit.fitHeight, height: 250),
+          Divider(height: 1.0),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+            child: Text(
+              '设置自动进入专注时间',
+              style: TextStyle(color: Colors.grey[600], fontSize: 12),
             ),
-            Divider(height: 1.0),
-            Text('设置自动进入专注时间'),
-            Divider(height: 1.0),
-            Container(
-              padding: EdgeInsets.all(10),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                          '开始时间：${GlobalConfig.startTime.hour}:${GlobalConfig.startTime.minute}'),
-                      Divider(height: 1, indent: 10),
-                      RaisedButton(
-                        child: Text('设置开始时间'),
-                        onPressed: () {
-                          Future<TimeOfDay> selectedTime = showTimePicker(
-                            initialTime: TimeOfDay.now(),
-                            context: context,
-                          );
-                          GlobalConfig.startTime = selectedTime as TimeOfDay;
-                          setState(() {});
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                          '结束时间：${GlobalConfig.endTime.hour}:${GlobalConfig.endTime.minute}'),
-                      Divider(height: 1, indent: 10),
-                      RaisedButton(
-                        child: Text('设置结束时间'),
-                        onPressed: () {
-                          Future<TimeOfDay> selectedTime = showTimePicker(
-                            initialTime: TimeOfDay.now(),
-                            context: context,
-                          );
-                          GlobalConfig.endTime = selectedTime as TimeOfDay;
-                          setState(() {});
-                        },
-                      ),
-                    ],
-                  ),
-                  Divider(height: 1),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('工作日重复'),
-                      Switch(
-                          value: _weekDayRepeat,
-                          onChanged: (value) {
-                            setState(() {
-                              _weekDayRepeat = value;
-                              _everyDayRepeat = !_everyDayRepeat;
-                            });
-                          })
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text('每天重复'),
-                      Switch(
-                          value: _everyDayRepeat,
-                          onChanged: (value) {
-                            setState(() {
-                              _everyDayRepeat = value;
-                              _weekDayRepeat = !_weekDayRepeat;
-                            });
-                          })
-                    ],
-                  ),
-                ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                  '开始时间：${GlobalConfig.startTime.hour}:${GlobalConfig.startTime.minute}'),
+              Divider(height: 1, indent: 10),
+              RaisedButton(
+                child: Text('设置开始时间'),
+                onPressed: () {
+                  Future<TimeOfDay> selectedTime = showTimePicker(
+                    initialTime: TimeOfDay.now(),
+                    context: context,
+                  );
+                  GlobalConfig.startTime = selectedTime as TimeOfDay;
+                  setState(() {});
+                },
               ),
-            )
-          ],
-        ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                  '结束时间：${GlobalConfig.endTime.hour}:${GlobalConfig.endTime.minute}'),
+              Divider(height: 1, indent: 10),
+              RaisedButton(
+                child: Text('设置结束时间'),
+                onPressed: () {
+                  Future<TimeOfDay> selectedTime = showTimePicker(
+                    initialTime: TimeOfDay.now(),
+                    context: context,
+                  );
+                  GlobalConfig.endTime = selectedTime as TimeOfDay;
+                  print(GlobalConfig.endTime.toString());
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
+          Divider(height: 1),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text('工作日重复'),
+              Switch(
+                  value: _weekDayRepeat,
+                  onChanged: (value) {
+                    setState(() {
+                      _weekDayRepeat = value;
+                      _everyDayRepeat = !_everyDayRepeat;
+                    });
+                  })
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text('每天重复'),
+              Switch(
+                  value: _everyDayRepeat,
+                  onChanged: (value) {
+                    setState(() {
+                      _everyDayRepeat = value;
+                      _weekDayRepeat = !_weekDayRepeat;
+                    });
+                  })
+            ],
+          ),
+        ],
       ),
     );
   }

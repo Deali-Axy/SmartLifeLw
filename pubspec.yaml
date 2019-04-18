@@ -25,6 +25,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   image_picker: ^0.5.0+9
   oktoast: ^2.0.0
+  groovin_material_icons: ^1.1.5
+  url_launcher: ^3.0.3
 
 
 dev_dependencies:

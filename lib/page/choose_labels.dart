@@ -120,4 +120,10 @@ class _PageState extends State<_Page> {
       }),
     );
   }
+
+  Future<Null> _onRefresh() async {
+    await Future.delayed(Duration(seconds: 3), () {
+      print('选择标签下拉刷新');
+    });
+  }
 }
