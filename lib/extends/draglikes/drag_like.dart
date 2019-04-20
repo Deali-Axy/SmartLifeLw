@@ -146,7 +146,7 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
               child: new Icon(Icons.label),
             ),
             onTap: () {
-              Navigator.pushNamed(context, UIRoute.chooseLabels);
+              Navigator.pushNamed(context, UIRoute.choose_labels);
             },
           ),
           ListTile(
@@ -155,7 +155,7 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
               child: new Icon(Icons.people),
             ),
             onTap: () {
-              Navigator.pushNamed(context, UIRoute.choosePeoples);
+              Navigator.pushNamed(context, UIRoute.choose_peoples);
             },
           ),
           ListTile(
@@ -164,7 +164,7 @@ class DragLikeState extends State<DragLikePage> with TickerProviderStateMixin {
               child: new Icon(Icons.timer),
             ),
             onTap: () {
-              Navigator.pushNamed(context, UIRoute.focusTime);
+              Navigator.pushNamed(context, UIRoute.focus_time);
             },
           ),
           ListTile(

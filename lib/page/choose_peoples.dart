@@ -40,7 +40,7 @@ class _ChoosePeoplesState extends State<ChoosePeoples> {
           IconButton(
               icon: Icon(Icons.check),
               onPressed: () {
-                Navigator.pushReplacementNamed(_context, UIRoute.circle);
+                Navigator.pop(_context);
               })
         ],
       ),

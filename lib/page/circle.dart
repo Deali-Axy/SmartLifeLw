@@ -25,6 +25,16 @@ class _SmartCircleState extends State<SmartCircle> {
   }
 
   @override
+  void initState() {
+    _refresh();
+    setState(() {
+
+    });
+    print('更新页面');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _context = context;
     return Material(
@@ -47,7 +57,7 @@ class _SmartCircleState extends State<SmartCircle> {
                 ],
               ),
               onTap: () {
-                Navigator.pushReplacementNamed(context, UIRoute.choosePeoples);
+                Navigator.pushNamed(context, UIRoute.choose_peoples);
               },
             ),
             backgroundColor: Theme.of(context).accentColor,

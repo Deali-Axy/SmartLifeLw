@@ -153,7 +153,7 @@ class HomeDrawer extends StatelessWidget {
               child: Icon(Icons.timer),
             ),
             onTap: () {
-              Navigator.pushNamed(context, UIRoute.focusTime);
+              Navigator.pushNamed(context, UIRoute.focus_time);
             },
           ),
           ListTile(

@@ -6,12 +6,22 @@ import 'package:smart_life_lw/network/circle_post.dart';
 import 'package:smart_life_lw/config.dart';
 import 'package:smart_life_lw/page/circle_content.dart';
 
-enum UserMenuEnum { search_post, edit_profile, share_user, block_user }
+enum UserMenuEnum {
+  search_post,
+  choose_labels,
+  edit_profile,
+  share_user,
+  block_user
+}
 
 List userMenuList = [
   {
     'value': UserMenuEnum.search_post,
     'text': '搜索帖子',
+  },
+  {
+    'value': UserMenuEnum.choose_labels,
+    'text': '选择标签',
   },
   {
     'value': UserMenuEnum.edit_profile,
@@ -38,6 +48,7 @@ class _UserHomePageState extends State<UserHomePage>
 
   var _tabs = <Tab>[
     Tab(text: '关于'),
+    Tab(text: '标签'),
     Tab(text: '圈子'),
     Tab(text: '相册'),
   ];
@@ -119,9 +130,12 @@ class _UserHomePageState extends State<UserHomePage>
         setState(() {
           _selectionMenu = result;
         });
-        switch(result){
+        switch (result) {
           case UserMenuEnum.search_post:
             // TODO: Handle this case.
+            break;
+          case UserMenuEnum.choose_labels:
+            Navigator.pushNamed(context, UIRoute.choose_labels);
             break;
           case UserMenuEnum.edit_profile:
             Navigator.pushNamed(context, UIRoute.edit_profile);
@@ -202,6 +216,32 @@ class _UserHomePageState extends State<UserHomePage>
               Text('13432886642'),
             ],
           ),
+        );
+      case '标签':
+        return ListView(
+          children: <Widget>[
+            Chip(
+              avatar: CircleAvatar(
+                backgroundColor: Colors.grey.shade800,
+                child: Text('AB'),
+              ),
+              label: Text('Aaron Burr'),
+            ),
+            Chip(
+              avatar: CircleAvatar(
+                backgroundColor: Colors.grey.shade800,
+                child: Text('AB'),
+              ),
+              label: Text('Aaron Burr'),
+            ),
+            Chip(
+              avatar: CircleAvatar(
+                backgroundColor: Colors.grey.shade800,
+                child: Text('AB'),
+              ),
+              label: Text('Aaron Burr'),
+            ),
+          ],
         );
       case '圈子':
         return RefreshIndicator(

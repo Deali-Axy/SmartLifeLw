@@ -7,7 +7,7 @@ import 'page/chat.dart';
 import 'page/circle.dart';
 import 'page/focus_time.dart';
 import 'page/login.dart';
-import 'page/user_home.dart';
+import 'package:smart_life_lw/page/user/user_home.dart';
 import 'page/edit_profile.dart';
 import 'extends/login_page.dart' as ExtendsLogin;
 import 'extends/sign_up_page.dart' as ExtendsSignUp;
@@ -37,11 +37,11 @@ class MainApp extends StatelessWidget {
       ),
       home: _AppHome(),
       routes: {
-        UIRoute.chooseLabels: (context) => ChooseLabels(),
-        UIRoute.choosePeoples: (context) => ChoosePeoples(),
+        UIRoute.choose_labels: (context) => ChooseLabels(),
+        UIRoute.choose_peoples: (context) => ChoosePeoples(),
         UIRoute.chat: (context) => Chat(),
         UIRoute.circle: (context) => SmartCircle(),
-        UIRoute.focusTime: (context) => FocusTime(),
+        UIRoute.focus_time: (context) => FocusTime(),
         UIRoute.login: (context) => LoginPage(),
         UIRoute.login_page: (ctx) => ExtendsLogin.LoginPage(),
         UIRoute.sign_up_page: (ctx) => ExtendsSignUp.SignUpPage(),
