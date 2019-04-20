@@ -20,6 +20,8 @@ class LoginUtils {
     var responseStr = await post(url, loginInfo.toMap());
     var jsonMap = jsonDecode(responseStr);
 
+    print(responseStr);
+
     return true;
   }
 }
