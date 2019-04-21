@@ -1,7 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'extends/splash_page.dart';
 import 'routes.dart';
+import 'config.dart';
 
 /// 文字图标混合按钮
 class TextIconButton extends StatelessWidget {
@@ -62,6 +63,8 @@ class SimpleDivider extends StatelessWidget {
 class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var userInfo=GlobalConfig.userInfo;
+
     Widget header = DrawerHeader(
       padding: EdgeInsets.zero,
       /* padding置为0 */
@@ -96,7 +99,7 @@ class HomeDrawer extends StatelessWidget {
                 children: <Widget>[
                   CircleAvatar(
                     backgroundImage:
-                        NetworkImage('http://lorempixel.com/100/100/'),
+                        NetworkImage(userInfo.portrait),
                     radius: 35.0,
                   ),
                   Container(
@@ -106,14 +109,14 @@ class HomeDrawer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center, // 竖直方向居中
                       children: <Widget>[
                         Text(
-                          "用户名",
+                          userInfo.username,
                           style: TextStyle(
                               fontSize: 20.0,
                               fontWeight: FontWeight.w400,
                               color: Colors.white),
                         ),
                         Text(
-                          "What's up",
+                          userInfo.signature,
                           style: TextStyle(fontSize: 14.0, color: Colors.white),
                         ),
                       ],
@@ -138,7 +141,7 @@ class HomeDrawer extends StatelessWidget {
         radius: 35.0,
       ),
       onDetailsPressed: () {
-        Navigator.pushNamed(context, UIRoute.login);
+        Navigator.pushNamed(context, UIRoute.login_page);
       },
     );
 
@@ -176,9 +179,11 @@ class HomeDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            title: Text('用户登录'),
+            title: Text('启动页'),
             onTap: () {
-              Navigator.pushNamed(context, UIRoute.login);
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return Splash();
+              }));
             },
           ),
           ListTile(

@@ -20,13 +20,17 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  # 图标
   cupertino_icons: ^0.1.2
-  image_picker: ^0.5.0+9
-  oktoast: ^2.0.0
   groovin_material_icons: ^1.1.5
+  # 图片选择
+  image_picker: ^0.5.0+9
+  # toast组件（还没用）
+  oktoast: ^2.0.0
+  # 打开浏览器
   url_launcher: ^3.0.3
+  # 简单数据存储
+  shared_preferences: ^0.4.1
 
 
 dev_dependencies:

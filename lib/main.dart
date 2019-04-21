@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_life_lw/utils/toast.dart';
 import 'package:smart_life_lw/widgets.dart';
 import 'config.dart' as Config;
 import 'page/choose_labels.dart';
@@ -6,17 +7,20 @@ import 'page/choose_peoples.dart';
 import 'page/chat.dart';
 import 'page/circle.dart';
 import 'page/focus_time.dart';
-import 'page/login.dart';
 import 'package:smart_life_lw/page/user/user_home.dart';
-import 'page/edit_profile.dart';
-import 'extends/login_page.dart' as ExtendsLogin;
-import 'extends/sign_up_page.dart' as ExtendsSignUp;
+import 'package:smart_life_lw/page/user/edit_profile.dart';
+import 'package:smart_life_lw/page/user/login_page.dart' as ExtendsLogin;
+import 'package:smart_life_lw/page/user/sign_up_page.dart' as ExtendsSignUp;
 import 'package:smart_life_lw/widget/news_card.dart';
 import 'package:smart_life_lw/widget/weather_card.dart';
 import 'package:smart_life_lw/widget/hitokoto_card.dart';
 import 'routes.dart';
 
-main() => runApp(MainApp());
+main() {
+  ///初始化配置
+  Config.GlobalConfig.init();
+  runApp(MainApp());
+}
 
 class MainApp extends StatelessWidget {
   @override
@@ -42,7 +46,6 @@ class MainApp extends StatelessWidget {
         UIRoute.chat: (context) => Chat(),
         UIRoute.circle: (context) => SmartCircle(),
         UIRoute.focus_time: (context) => FocusTime(),
-        UIRoute.login: (context) => LoginPage(),
         UIRoute.login_page: (ctx) => ExtendsLogin.LoginPage(),
         UIRoute.sign_up_page: (ctx) => ExtendsSignUp.SignUpPage(),
         UIRoute.user_home: (ctx) => UserHomePage(),
@@ -65,11 +68,18 @@ class _AppPage extends StatefulWidget {
 }
 
 class _AppPageState extends State<_AppPage> {
+  BuildContext _context;
   double progress = 0.0;
   ScrollController _scrollController;
 
+  _AppPageState() {
+//    var userid = Config.GlobalConfig.userId;
+//    Toast.show(_context, userid.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
+    _context = context;
     // 滚动到底部
     _scrollController?.animateTo(
       _scrollController.position.maxScrollExtent,

@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:smart_life_lw/utils/http.dart';
+import 'common.dart';
 
 class LoginInfo {
   String phone;
   String password;
+
+  LoginInfo({this.phone, this.password});
 
   Map toMap() {
     return {
@@ -14,14 +17,22 @@ class LoginInfo {
 }
 
 class LoginUtils {
-  static Future<bool> login(LoginInfo loginInfo) async {
-    var url = '';
+  static Future<Response> login(LoginInfo loginInfo) async {
+    var url =
+        'http://47.106.203.63:9091/useradmin/login?phone=${loginInfo.phone}&password=${loginInfo.password}';
 
-    var responseStr = await post(url, loginInfo.toMap());
+    var responseStr = await get(url);
     var jsonMap = jsonDecode(responseStr);
-
     print(responseStr);
 
-    return true;
+    try {
+      return Response(
+        code: jsonMap['code'],
+        info: jsonMap['info'],
+        data: jsonMap['data'],
+      );
+    } catch (exp) {
+      return Response(code: -1, info: exp);
+    }
   }
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
+import 'package:smart_life_lw/routes.dart';
+import 'package:smart_life_lw/utils/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:smart_life_lw/network/sign_up.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -8,37 +11,62 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  BuildContext _context;
+
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   String _username, _phone, _password;
   bool _isObscure = true;
   Color _eyeColor;
   bool _isAgree = false;
+  int _genderValue = 0;
+
+  _request() async {
+    var result = await SignUpUtils.signUp(SignUpInfo(
+        username: _username,
+        phone: _phone,
+        password: _password,
+        gender: _genderValue));
+    _scaffoldKey.currentState
+        .showSnackBar(SnackBar(content: Text(result.info)));
+    if (result.code == 200) {
+      Toast.show(_context, '注册成功，请登录');
+      Navigator.pushReplacementNamed(context, UIRoute.login_page);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
+
     return Scaffold(
-        body: Form(
-            key: _formKey,
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 22.0),
-              children: <Widget>[
-                SizedBox(
-                  height: kToolbarHeight,
-                ),
-                buildTitle(),
-                buildTitleLine(),
-                SizedBox(height: 70.0),
-                buildUserNameTextField(),
-                buildPhoneTextField(),
-                buildPasswordTextField(context),
-                buildLicense(context),
-                SizedBox(height: 60.0),
-                buildMainButton(context),
-                SizedBox(height: 30.0),
-                buildGoLoginText(context),
-                SizedBox(height: 30.0),
-              ],
-            )));
+      key: _scaffoldKey,
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 22.0),
+          children: <Widget>[
+            SizedBox(
+              height: kToolbarHeight,
+            ),
+            buildTitle(),
+            buildTitleLine(),
+            SizedBox(height: 70.0),
+            buildUserNameTextField(),
+            buildPhoneTextField(),
+            buildPasswordTextField(context),
+            buildGender(context),
+            buildLicense(context),
+            SizedBox(height: 60.0),
+            buildMainButton(context),
+            SizedBox(height: 30.0),
+            buildGoLoginText(context),
+            SizedBox(height: 30.0),
+          ],
+        ),
+      ),
+    );
   }
 
   Align buildGoLoginText(BuildContext context) {
@@ -56,8 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle(color: Colors.green),
               ),
               onTap: () {
-                //TODO 跳转到注册页面
-                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, UIRoute.login_page);
               },
             ),
           ],
@@ -106,22 +133,54 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       },
       decoration: InputDecoration(
-          labelText: '密码',
-          suffixIcon: IconButton(
-              icon: Icon(
-                _isObscure
-                    ? GroovinMaterialIcons.eye
-                    : GroovinMaterialIcons.eye_off,
-                color: _eyeColor,
-              ),
-              onPressed: () {
-                setState(() {
-                  _isObscure = !_isObscure;
-                  _eyeColor = _isObscure
-                      ? Colors.grey
-                      : Theme.of(context).iconTheme.color;
-                });
-              })),
+        labelText: '密码',
+        suffixIcon: IconButton(
+          icon: Icon(
+            _isObscure
+                ? GroovinMaterialIcons.eye
+                : GroovinMaterialIcons.eye_off,
+            color: _eyeColor,
+          ),
+          onPressed: () {
+            setState(() {
+              _isObscure = !_isObscure;
+              _eyeColor =
+                  _isObscure ? Colors.grey : Theme.of(context).iconTheme.color;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget buildGender(BuildContext context) {
+    var genderValueChange = (value) {
+      _genderValue = value;
+      setState(() {});
+    };
+
+    return Row(
+      children: <Widget>[
+        Text('选择性别：'),
+        Radio(
+          value: 0,
+          groupValue: _genderValue,
+          onChanged: genderValueChange,
+        ),
+        Text('未指定'),
+        Radio(
+          value: 1,
+          groupValue: _genderValue,
+          onChanged: genderValueChange,
+        ),
+        Text('男'),
+        Radio(
+          value: 2,
+          groupValue: _genderValue,
+          onChanged: genderValueChange,
+        ),
+        Text('女'),
+      ],
     );
   }
 
@@ -135,12 +194,13 @@ class _SignUpPageState extends State<SignUpPage> {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
             Checkbox(
-                value: _isAgree,
-                onChanged: (value) {
-                  setState(() {
-                    _isAgree = value;
-                  });
-                }),
+              value: _isAgree,
+              onChanged: (value) {
+                setState(() {
+                  _isAgree = value;
+                });
+              },
+            ),
             Text('同意'),
             GestureDetector(
               child: Text('《汇智Life软件许可及服务协议》',
@@ -158,7 +218,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child:
                   Text('《汇智Life隐私保护指引》', style: TextStyle(color: Colors.green)),
               onTap: () async {
-                const url = 'https://flutter.io';
+                const url = 'http://47.106.203.63/group1/M00/00/00/hzlife/privacy.html';
                 if (await canLaunch(url))
                   await launch(url);
                 else
@@ -187,8 +247,16 @@ class _SignUpPageState extends State<SignUpPage> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               ///只有输入的内容符合要求通过才会到达此处
-              _formKey.currentState.save();
-              print('email:$_phone , assword:$_password');
+              if (_isAgree) {
+                _formKey.currentState.save();
+                _request();
+                print('phone:$_phone , assword:$_password');
+              } else {
+                _scaffoldKey.currentState.showSnackBar(SnackBar(
+                  content: Text('必须同意服务协议才可以注册！'),
+                  duration: Duration(milliseconds: 1000),
+                ));
+              }
             }
           },
         ),

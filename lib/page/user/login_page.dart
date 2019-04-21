@@ -1,13 +1,10 @@
-/*
- * Created by 李卓原 on 2018/10/13.
- * email: zhuoyuan93@gmail.com
- * 写一个贼特么好看的登录页面
- */
-
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
-
-import '../routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smart_life_lw/network/login.dart';
+import 'package:smart_life_lw/routes.dart';
+import 'package:smart_life_lw/utils/toast.dart';
+import 'package:smart_life_lw/config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,7 +12,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  BuildContext _context;
+
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   String _phone, _password;
   bool _isObscure = true;
   Color _eyeColor;
@@ -38,9 +39,23 @@ class _LoginPageState extends State<LoginPage> {
     },
   ];
 
+  _request() async {
+    var result =
+        await LoginUtils.login(LoginInfo(phone: _phone, password: _password));
+    _scaffoldKey.currentState
+        .showSnackBar(SnackBar(content: Text(result.info)));
+    if (result.code == 200) {
+      Toast.show(_context, '登录成功！');
+      GlobalConfig.sharedPreferences.setInt('userid', result.data);
+      Navigator.pop(_context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return Scaffold(
+        key: _scaffoldKey,
         body: Form(
             key: _formKey,
             child: ListView(
@@ -141,8 +156,8 @@ class _LoginPageState extends State<LoginPage> {
             if (_formKey.currentState.validate()) {
               ///只有输入的内容符合要求通过才会到达此处
               _formKey.currentState.save();
-              //TODO 执行登录方法
-              print('email:$_phone , assword:$_password');
+              _request();
+              print('email:$_phone , password:$_password');
             }
           },
           shape: StadiumBorder(side: BorderSide()),
