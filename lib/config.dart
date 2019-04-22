@@ -8,7 +8,6 @@ const TITLE = '汇智Life';
 
 abstract class GlobalConfig {
   static SharedPreferences sharedPreferences;
-  static PackageInfo packageInfo;
 
   static bool focusMode = false;
   static TimeOfDay startTime = TimeOfDay.now();
@@ -18,7 +17,10 @@ abstract class GlobalConfig {
 
   static init() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    packageInfo = await PackageInfo.fromPlatform();
+  }
+
+  static Future<PackageInfo> get packageInfo async {
+    return await PackageInfo.fromPlatform();
   }
 
   static set userId(int value) => sharedPreferences.setInt('userid', value);
@@ -35,9 +37,12 @@ abstract class GlobalConfig {
           json.decode(sharedPreferences.getString('userinfo')));
     else
       return UserInfo(
+        id: 0,
         username: '未登录',
         signature: '点击这里登录汇智Life',
-        portrait: 'http://lorempixel.com/100/100/'
+        portrait: 'http://lorempixel.com/100/100/',
       );
   }
+
+  static bool get isLogin => sharedPreferences.getInt('userid') != null;
 }

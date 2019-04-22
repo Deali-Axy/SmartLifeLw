@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
+import 'package:smart_life_lw/network/user.dart';
 import 'package:smart_life_lw/routes.dart';
+import 'package:smart_life_lw/utils/toast.dart';
 import 'package:smart_life_lw/widgets.dart';
 import 'package:smart_life_lw/network/circle_post.dart';
 import 'package:smart_life_lw/config.dart';
@@ -44,6 +46,7 @@ class UserHomePage extends StatefulWidget {
 
 class _UserHomePageState extends State<UserHomePage>
     with SingleTickerProviderStateMixin {
+  BuildContext _context;
   TabController _tabController;
 
   var _tabs = <Tab>[
@@ -56,6 +59,7 @@ class _UserHomePageState extends State<UserHomePage>
   var _circlePosts = List<CirclePost>();
   var _pictures = List<String>();
   var _selectionMenu;
+  UserInfo _userInfo;
 
   @override
   void dispose() {
@@ -66,9 +70,20 @@ class _UserHomePageState extends State<UserHomePage>
   @override
   void initState() {
     _tabController = TabController(length: _tabs.length, vsync: this);
+    _refreshUserInfo();
     _refreshCirclePosts();
     _refreshPictures();
     super.initState();
+  }
+
+  Future<void> _refreshUserInfo() async {
+    var response = await UserUtils.getUserInfo(GlobalConfig.userId);
+    if (response.code == 200) {
+      _userInfo = response.data;
+      Toast.show(_context, '刷新用户信息成功！');
+    } else
+      Toast.show(_context, '刷新用户信息失败。信息：${response.data}');
+    setState(() {});
   }
 
   Future<void> _refreshCirclePosts() async {
@@ -92,6 +107,7 @@ class _UserHomePageState extends State<UserHomePage>
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return Material(
       child: CustomScrollView(
         slivers: <Widget>[
@@ -173,12 +189,11 @@ class _UserHomePageState extends State<UserHomePage>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage:
-                      NetworkImage('http://lorempixel.com/100/100/'),
+                  backgroundImage: NetworkImage(_userInfo.portrait),
                   radius: 35.0,
                 ),
                 SimpleDivider(height: 0, width: 10),
-                Text('用户名', style: TextStyle(fontSize: 18)),
+                Text(_userInfo?.username, style: TextStyle(fontSize: 18)),
               ],
             ),
           ),
@@ -197,7 +212,8 @@ class _UserHomePageState extends State<UserHomePage>
             children: <Widget>[
               Text('签名', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text('温柔正确的人总是难以生存，因为这世界既不温柔，也不正确'),
+//              Text('温柔正确的人总是难以生存，因为这世界既不温柔，也不正确'),
+              Text(_userInfo?.signature),
               SimpleDivider(height: 20),
               Text('所在地', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),

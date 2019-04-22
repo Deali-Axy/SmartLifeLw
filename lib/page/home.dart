@@ -6,7 +6,6 @@ import 'package:smart_life_lw/widget/news_card.dart';
 import 'package:smart_life_lw/widget/hitokoto_card.dart';
 import 'package:smart_life_lw/utils/toast.dart';
 
-
 class AppHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) => _AppPage();
@@ -21,13 +20,18 @@ class _AppPage extends StatefulWidget {
 
 class _AppPageState extends State<_AppPage> {
   BuildContext _context;
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
+
   double progress = 0.0;
   ScrollController _scrollController;
 
   @override
   void initState() {
-//    var userid = Config.GlobalConfig.userId;
-//    Toast.show(_context, userid?.toString());
+    var userid = Config.GlobalConfig.userId;
+    if (Config.GlobalConfig.isLogin)
+      print('已登录');
+    else
+      print('未登录！');
     super.initState();
   }
 
@@ -41,6 +45,7 @@ class _AppPageState extends State<_AppPage> {
       curve: Curves.easeOut,
     );
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('汇智Life ${Config.GlobalConfig.focusMode ? '(专注时间)' : ''}'),
       ),
@@ -57,7 +62,7 @@ class _AppPageState extends State<_AppPage> {
                 title: '自己想做的事情就要坚持下去',
                 summary: '不要在意别人的眼光，别人的意见只是让你参考的，自己心里想的才是最重要的，别给自己的人生留遗憾!',
                 picUrl:
-                'https://yangchengsen.oss-cn-shenzhen.aliyuncs.com/Picture4.png',
+                    'https://yangchengsen.oss-cn-shenzhen.aliyuncs.com/Picture4.png',
               ),
             ],
           ),

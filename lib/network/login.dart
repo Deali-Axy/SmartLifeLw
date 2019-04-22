@@ -22,10 +22,11 @@ class LoginUtils {
         'http://47.106.203.63:9091/useradmin/login?phone=${loginInfo.phone}&password=${loginInfo.password}';
 
     var responseStr = await get(url);
-    var jsonMap = jsonDecode(responseStr);
     print(responseStr);
 
     try {
+      var jsonMap = jsonDecode(responseStr);
+
       return Response(
         code: jsonMap['code'],
         info: jsonMap['info'],

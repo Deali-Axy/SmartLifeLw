@@ -4,18 +4,18 @@ import 'common.dart';
 
 class UserInfo {
   int id;
-  String username;
-  String phone;
-  String password;
-  String portrait;
-  String signature;
-  int gender;
-  int birthday;
-  String email;
-  Map type;
-  int isverify;
-  String province;
-  String city;
+  String username = '';
+  int phone = 0;
+  String password = '';
+  String portrait = 'http://lorempixel.com/100/100/';
+  String signature = '';
+  int gender = 0;
+  int birthday = 0;
+  String email = '';
+  Map type = {};
+  int isverify = 1;
+  String province = '广东';
+  String city = '广州';
 
   UserInfo(
       {this.id,
@@ -36,7 +36,7 @@ class UserInfo {
       : id = map['id'],
         username = map['username'],
         phone = map['phone'],
-        portrait = map['protrait'],
+        portrait = map['portrait'],
         signature = map['signature'],
         gender = map['gender'],
         birthday = map['birthday'],
@@ -69,16 +69,17 @@ abstract class UserUtils {
     var responseStr = await get(url);
     var jsonMap = jsonDecode(responseStr);
 
-    try {
-      var data = jsonMap['data'];
+    var data = jsonMap['data'];
 
-      return Response(
-        code: jsonMap['code'],
-        info: jsonMap['info'],
-        data: UserInfo.fromMap(data),
-      );
-    } catch (exp) {
-      return Response(code: -1, info: exp);
+    return Response(
+      code: jsonMap['code'],
+      info: jsonMap['info'],
+      data: UserInfo.fromMap(data),
+    );
+
+    try {} catch (exp) {
+      print(exp);
+      return Response(code: -1, info: exp.toString());
     }
   }
 }

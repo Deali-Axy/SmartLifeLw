@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_life_lw/network/login.dart';
+import 'package:smart_life_lw/network/user.dart';
 import 'package:smart_life_lw/routes.dart';
 import 'package:smart_life_lw/utils/toast.dart';
 import 'package:smart_life_lw/config.dart';
@@ -46,7 +47,9 @@ class _LoginPageState extends State<LoginPage> {
         .showSnackBar(SnackBar(content: Text(result.info)));
     if (result.code == 200) {
       Toast.show(_context, '登录成功！');
-      GlobalConfig.sharedPreferences.setInt('userid', result.data);
+      GlobalConfig.userId = result.data;
+      result = await UserUtils.getUserInfo(result.data);
+      if (result.code == 200) GlobalConfig.userInfo = result.data;
       Navigator.pop(_context);
     }
   }

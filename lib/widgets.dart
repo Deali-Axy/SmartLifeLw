@@ -63,7 +63,9 @@ class SimpleDivider extends StatelessWidget {
 class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var userInfo=GlobalConfig.userInfo;
+    var userInfo = GlobalConfig.userInfo;
+
+    print(userInfo.toMap());
 
     Widget header = DrawerHeader(
       padding: EdgeInsets.zero,
@@ -98,8 +100,9 @@ class HomeDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(userInfo.portrait),
+                    backgroundImage: NetworkImage(userInfo.portrait == null
+                        ? 'http://lorempixel.com/100/100/'
+                        : userInfo.portrait),
                     radius: 35.0,
                   ),
                   Container(
@@ -116,7 +119,9 @@ class HomeDrawer extends StatelessWidget {
                               color: Colors.white),
                         ),
                         Text(
-                          userInfo.signature,
+                          userInfo.signature == null
+                              ? '我们所过的每个平凡的日常，也许就是连续发生的奇迹。'
+                              : userInfo.signature,
                           style: TextStyle(fontSize: 14.0, color: Colors.white),
                         ),
                       ],
@@ -125,7 +130,10 @@ class HomeDrawer extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                Navigator.pushNamed(context, UIRoute.user_home);
+                if (GlobalConfig.isLogin)
+                  Navigator.pushNamed(context, UIRoute.user_home);
+                else
+                  Navigator.pushNamed(context, UIRoute.login_page);
               },
             ),
           ),
@@ -181,7 +189,7 @@ class HomeDrawer extends StatelessWidget {
           ListTile(
             title: Text('启动页'),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context){
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return Splash();
               }));
             },

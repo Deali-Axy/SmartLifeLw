@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_life_lw/config.dart';
 import 'package:smart_life_lw/network/sina_news.dart';
 import 'package:smart_life_lw/network/home_news.dart';
+import 'package:smart_life_lw/utils/toast.dart';
 
 class NewsCard extends StatefulWidget {
   final String title;
@@ -45,11 +46,7 @@ class _NewsCardState extends State<NewsCard> {
       @required this.summary,
       @required this.picUrl,
       this.onLikePressed,
-      this.onDisLikePressed}) {
-    _newsManager.init();
-    _sinaNewsManager.init();
-    _refresh();
-  }
+      this.onDisLikePressed});
 
   _refresh() async {
     if (GlobalConfig.focusMode) {
@@ -58,10 +55,9 @@ class _NewsCardState extends State<NewsCard> {
       SinaNewsObject sinaNews = _sinaNewsManager.getNext();
       if (sinaNews == null) {
         if (_context != null)
-          Scaffold.of(_context).showSnackBar(SnackBar(
-            content: Text('加载新闻资讯失败！'),
-            duration: Duration(milliseconds: 500),
-          ));
+          Toast.show(context, '加载新闻资讯失败！');
+        else
+          print('加载新闻资讯失败，而且也找不到context对象');
 
         return;
       }
@@ -77,24 +73,39 @@ class _NewsCardState extends State<NewsCard> {
       picUrl = _currentNews.bannerUrl;
       print('刷新新闻卡片！');
       setState(() {});
-    }else
+    } else
       print('没有新闻可以刷新！');
   }
 
   _like() {
     _refresh();
-    Scaffold.of(_context).showSnackBar(SnackBar(
-      content: Text('喜欢～'),
-      duration: Duration(milliseconds: 100),
-    ));
+    Toast.show(_context, '喜欢～');
+//    Scaffold.of(_context).showSnackBar(SnackBar(
+//      content: Text('喜欢～'),
+//      duration: Duration(milliseconds: 100),
+//    ));
   }
 
   _dislike() {
     _refresh();
-    Scaffold.of(_context).showSnackBar(SnackBar(
-      content: Text('不喜欢～'),
-      duration: Duration(milliseconds: 100),
-    ));
+    Toast.show(_context, '不喜欢～');
+//    Scaffold.of(_context).showSnackBar(SnackBar(
+//      content: Text('不喜欢～'),
+//      duration: Duration(milliseconds: 100),
+//    ));
+  }
+
+  _init() async {
+    await _newsManager.init();
+    await _sinaNewsManager.init();
+    _refresh();
+  }
+
+  @override
+  void initState() {
+    print('初始化新闻卡片');
+    _init();
+    super.initState();
   }
 
   @override

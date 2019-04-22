@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:smart_life_lw/routes.dart';
 import 'package:smart_life_lw/config.dart';
+import 'package:smart_life_lw/page/home.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -10,6 +11,16 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   final Color _borderColor = Colors.white;
+  String _version;
+
+  _SplashState() {
+    _getVersion();
+  }
+
+  _getVersion() async {
+    _version = (await GlobalConfig.packageInfo).version;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +65,7 @@ class _SplashState extends State<Splash> {
                   style: TextStyle(color: Colors.white, fontSize: 40),
                 ),
                 Text(
-                  '版本：${GlobalConfig.packageInfo.version}',
+                  '版本：$_version',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ],
@@ -78,6 +89,8 @@ class _SplashState extends State<Splash> {
   }
 
   void go2HomePage() {
-    Navigator.pushReplacementNamed(context, UIRoute.home);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) {
+      return AppHome();
+    }));
   }
 }

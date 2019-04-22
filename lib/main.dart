@@ -38,7 +38,6 @@ class MainApp extends StatelessWidget {
       ),
       home: Splash(),
       routes: {
-        UIRoute.home: (ctx) => AppHome(),
         UIRoute.choose_labels: (context) => ChooseLabels(),
         UIRoute.choose_peoples: (context) => ChoosePeoples(),
         UIRoute.chat: (context) => Chat(),
