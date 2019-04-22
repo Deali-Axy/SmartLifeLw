@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:smart_life_lw/routes.dart';
+import 'package:smart_life_lw/config.dart';
 
 class Splash extends StatefulWidget {
   @override
@@ -7,7 +9,7 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  final Color borderColor = Colors.white;
+  final Color _borderColor = Colors.white;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class _SplashState extends State<Splash> {
           ),
           Container(
             alignment: Alignment.topRight,
-            padding: EdgeInsets.fromLTRB(0.0, 50, 10, 0.0),
+            padding: EdgeInsets.fromLTRB(0, 50, 10, 0),
             child: OutlineButton(
               child: Text(
                 "跳过",
@@ -33,13 +35,29 @@ class _SplashState extends State<Splash> {
               onPressed: () {
                 go2HomePage();
               },
-              color: borderColor,
-              disabledBorderColor: borderColor,
-              highlightedBorderColor: borderColor,
-              disabledTextColor: borderColor,
-              highlightColor: borderColor,
-              splashColor: borderColor,
-              textColor: borderColor,
+              color: _borderColor,
+              disabledBorderColor: _borderColor,
+              highlightedBorderColor: _borderColor,
+              disabledTextColor: _borderColor,
+              highlightColor: _borderColor,
+              splashColor: _borderColor,
+              textColor: _borderColor,
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '汇智Life',
+                  style: TextStyle(color: Colors.white, fontSize: 40),
+                ),
+                Text(
+                  '版本：${GlobalConfig.packageInfo.version}',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
             ),
           ),
         ],
@@ -60,6 +78,6 @@ class _SplashState extends State<Splash> {
   }
 
   void go2HomePage() {
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, UIRoute.home);
   }
 }

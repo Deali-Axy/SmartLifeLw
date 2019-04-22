@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:package_info/package_info.dart';
 import 'package:smart_life_lw/network/user.dart';
 
 const TITLE = '汇智Life';
 
 abstract class GlobalConfig {
   static SharedPreferences sharedPreferences;
+  static PackageInfo packageInfo;
 
   static bool focusMode = false;
   static TimeOfDay startTime = TimeOfDay.now();
@@ -16,6 +18,7 @@ abstract class GlobalConfig {
 
   static init() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    packageInfo = await PackageInfo.fromPlatform();
   }
 
   static set userId(int value) => sharedPreferences.setInt('userid', value);

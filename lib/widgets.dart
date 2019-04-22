@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'extends/splash_page.dart';
+import 'package:smart_life_lw/page/splash_page.dart';
 import 'routes.dart';
 import 'config.dart';
 

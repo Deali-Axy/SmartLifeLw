@@ -1,4 +1,5 @@
 abstract class UIRoute {
+  static const String home = 'home';
   static const String choose_labels = 'choose_labels';
   static const String choose_peoples = 'choose_peoples';
   static const String chat = 'chat';

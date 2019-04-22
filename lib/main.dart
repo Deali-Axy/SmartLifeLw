@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:smart_life_lw/utils/toast.dart';
-import 'package:smart_life_lw/widgets.dart';
 import 'config.dart' as Config;
 import 'page/choose_labels.dart';
 import 'page/choose_peoples.dart';
 import 'page/chat.dart';
 import 'page/circle.dart';
 import 'page/focus_time.dart';
+import 'package:smart_life_lw/page/home.dart';
 import 'package:smart_life_lw/page/user/user_home.dart';
 import 'package:smart_life_lw/page/user/edit_profile.dart';
 import 'package:smart_life_lw/page/user/login_page.dart' as ExtendsLogin;
 import 'package:smart_life_lw/page/user/sign_up_page.dart' as ExtendsSignUp;
-import 'package:smart_life_lw/widget/news_card.dart';
-import 'package:smart_life_lw/widget/weather_card.dart';
-import 'package:smart_life_lw/widget/hitokoto_card.dart';
+import 'package:smart_life_lw/page/splash_page.dart';
 import 'routes.dart';
 
 main() {
@@ -39,8 +36,9 @@ class MainApp extends StatelessWidget {
         ),
         hintColor: Colors.grey[400],
       ),
-      home: _AppHome(),
+      home: Splash(),
       routes: {
+        UIRoute.home: (ctx) => AppHome(),
         UIRoute.choose_labels: (context) => ChooseLabels(),
         UIRoute.choose_peoples: (context) => ChoosePeoples(),
         UIRoute.chat: (context) => Chat(),
@@ -51,64 +49,6 @@ class MainApp extends StatelessWidget {
         UIRoute.user_home: (ctx) => UserHomePage(),
         UIRoute.edit_profile: (ctx) => EditProfilePage(),
       },
-    );
-  }
-}
-
-class _AppHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => _AppPage();
-}
-
-class _AppPage extends StatefulWidget {
-  _AppPage({Key key}) : super(key: key);
-
-  @override
-  _AppPageState createState() => _AppPageState();
-}
-
-class _AppPageState extends State<_AppPage> {
-  BuildContext _context;
-  double progress = 0.0;
-  ScrollController _scrollController;
-
-  _AppPageState() {
-//    var userid = Config.GlobalConfig.userId;
-//    Toast.show(_context, userid.toString());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _context = context;
-    // 滚动到底部
-    _scrollController?.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-    );
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('汇智Life ${Config.GlobalConfig.focusMode ? '(专注时间)' : ''}'),
-      ),
-      drawer: HomeDrawer(),
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: ListView(
-            controller: _scrollController,
-            children: <Widget>[
-              WeatherCard(),
-              HitokotoCard(),
-              NewsCard(
-                title: '自己想做的事情就要坚持下去',
-                summary: '不要在意别人的眼光，别人的意见只是让你参考的，自己心里想的才是最重要的，别给自己的人生留遗憾!',
-                picUrl:
-                    'https://yangchengsen.oss-cn-shenzhen.aliyuncs.com/Picture4.png',
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
