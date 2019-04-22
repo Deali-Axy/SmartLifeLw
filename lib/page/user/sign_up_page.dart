@@ -37,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
       GlobalConfig.userId = result.data;
       result = await UserUtils.getUserInfo(result.data);
       if (result.code == 200)
-        GlobalConfig.userInfo = UserInfo.fromMap(result.data);
+        GlobalConfig.userInfo = result.data;
       Navigator.pop(_context);
     }
   }
