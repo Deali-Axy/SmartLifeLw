@@ -212,16 +212,17 @@ class _UserHomePageState extends State<UserHomePage>
             children: <Widget>[
               Text('签名', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-//              Text('温柔正确的人总是难以生存，因为这世界既不温柔，也不正确'),
-              Text(_userInfo?.signature),
+              Text(_userInfo.signature.length == 0
+                  ? '温柔正确的人总是难以生存，因为这世界既不温柔，也不正确'
+                  : _userInfo?.signature),
               SimpleDivider(height: 20),
               Text('所在地', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text('广东 广州'),
+              Text('${_userInfo?.province} ${_userInfo?.city}'),
               SimpleDivider(height: 20),
               Text('性别', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text('男'),
+              Text(_userInfo?.gender == 1 ? '男' : '女'),
               SimpleDivider(height: 20),
               Text('注册时间', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
@@ -229,7 +230,7 @@ class _UserHomePageState extends State<UserHomePage>
               SimpleDivider(height: 20),
               Text('手机号码', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text('13432886642'),
+              Text(_userInfo.phone.toString()),
             ],
           ),
         );
