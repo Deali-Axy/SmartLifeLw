@@ -70,75 +70,84 @@ class HomeDrawer extends StatelessWidget {
     Widget header = DrawerHeader(
       padding: EdgeInsets.zero,
       /* padding置为0 */
-      child: Stack(children: <Widget>[
-        /* 用stack来放背景图片 */
-        Opacity(
-          opacity: 0.7,
-          child: Image.asset(
-            'images/food04.jpeg',
-            fit: BoxFit.fill,
-            width: double.infinity,
-          ),
-        ),
-        BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-          child: Container(
-            color: Colors.black.withOpacity(0.2),
-          ),
-        ),
-        Align(
-          /* 先放置对齐 */
-          alignment: FractionalOffset.bottomLeft,
-          child: Container(
-            height: 70.0,
-            margin: EdgeInsets.only(left: 12.0, bottom: 12.0),
-            child: GestureDetector(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                /* 宽度只用包住子组件即可 */
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(userInfo.portrait == null
-                        ? 'http://lorempixel.com/100/100/'
-                        : userInfo.portrait),
-                    radius: 35.0,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 6.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start, // 水平方向左对齐
-                      mainAxisAlignment: MainAxisAlignment.center, // 竖直方向居中
-                      children: <Widget>[
-                        Text(
-                          userInfo.username,
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white),
-                        ),
-                        Text(
-                          userInfo.signature == null
-                              ? '我们所过的每个平凡的日常，也许就是连续发生的奇迹。'
-                              : userInfo.signature,
-                          style: TextStyle(fontSize: 14.0, color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              onTap: () {
-                if (GlobalConfig.isLogin)
-                  Navigator.pushNamed(context, UIRoute.user_home);
-                else
-                  Navigator.pushNamed(context, UIRoute.login_page);
-              },
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          /* 用stack来放背景图片 */
+          Opacity(
+            opacity: 0.7,
+            child: Image.asset(
+              'images/food04.jpeg',
+              fit: BoxFit.fill,
+              width: double.infinity,
             ),
           ),
-        ),
-      ]),
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+            child: Container(
+              color: Colors.black.withOpacity(0.2),
+            ),
+          ),
+          Align(
+            /* 先放置对齐 */
+            alignment: FractionalOffset.bottomLeft,
+            child: Container(
+              height: 70.0,
+              margin: EdgeInsets.only(left: 12.0, bottom: 12.0),
+              child: GestureDetector(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  /* 宽度只用包住子组件即可 */
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(userInfo.portrait == null
+                          ? 'http://lorempixel.com/100/100/'
+                          : userInfo.portrait),
+                      radius: 35.0,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 6.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        // 水平方向左对齐
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // 竖直方向居中
+                        children: <Widget>[
+                          Text(
+                            userInfo.username,
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white),
+                          ),
+                          Text(
+                            userInfo.signature == null
+                                ? '我们所过的每个平凡的日常，也许就是连续发生的奇迹。'
+                                : userInfo.signature,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  if (GlobalConfig.isLogin)
+                    Navigator.pushNamed(context, UIRoute.user_home);
+                  else
+                    Navigator.pushNamed(context, UIRoute.login_page);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
     );
 
     Widget userHeader = new UserAccountsDrawerHeader(
@@ -186,26 +195,26 @@ class HomeDrawer extends StatelessWidget {
             },
           ),
           Divider(),
-          ListTile(
-            title: Text('启动页'),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return Splash();
-              }));
-            },
-          ),
-          ListTile(
-            title: Text('extend用户登录'),
-            onTap: () {
-              Navigator.pushNamed(context, UIRoute.login_page);
-            },
-          ),
-          ListTile(
-            title: Text('extend用户注册'),
-            onTap: () {
-              Navigator.pushNamed(context, UIRoute.sign_up_page);
-            },
-          ),
+//          ListTile(
+//            title: Text('启动页'),
+//            onTap: () {
+//              Navigator.push(context, MaterialPageRoute(builder: (context) {
+//                return Splash();
+//              }));
+//            },
+//          ),
+//          ListTile(
+//            title: Text('extend用户登录'),
+//            onTap: () {
+//              Navigator.pushNamed(context, UIRoute.login_page);
+//            },
+//          ),
+//          ListTile(
+//            title: Text('extend用户注册'),
+//            onTap: () {
+//              Navigator.pushNamed(context, UIRoute.sign_up_page);
+//            },
+//          ),
           ListTile(
             title: Text('检查更新'),
             leading: CircleAvatar(

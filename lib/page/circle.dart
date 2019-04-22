@@ -27,9 +27,7 @@ class _SmartCircleState extends State<SmartCircle> {
   @override
   void initState() {
     _refresh();
-    setState(() {
-
-    });
+    setState(() {});
     print('更新页面');
     super.initState();
   }
@@ -62,27 +60,7 @@ class _SmartCircleState extends State<SmartCircle> {
             ),
             backgroundColor: Theme.of(context).accentColor,
             expandedHeight: 200.0,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: <Widget>[
-                  Image.asset(
-                    'images/food06.jpeg',
-                    fit: BoxFit.fill,
-                    width: double.infinity,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 190, left: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(GroovinMaterialIcons.message_bulleted),
-                        Text('帖子数：${circlePosts.length}')
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            flexibleSpace: _buildFlexibleSpaceBar(context),
           ),
           SliverList(
             delegate: SliverChildListDelegate(
@@ -93,6 +71,37 @@ class _SmartCircleState extends State<SmartCircle> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildFlexibleSpaceBar(BuildContext context){
+    return FlexibleSpaceBar(
+      background: Stack(
+        children: <Widget>[
+          Image.asset(
+            'images/food06.jpeg',
+            fit: BoxFit.fill,
+            width: double.infinity,
+          ),
+          Container(
+            padding: EdgeInsets.only(top: 190, left: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(GroovinMaterialIcons.message_bulleted),
+                Text('帖子数：${circlePosts.length}')
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFloatingButton(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {},
     );
   }
 

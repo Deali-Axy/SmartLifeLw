@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
+import 'package:smart_life_lw/config.dart';
+import 'package:smart_life_lw/network/user.dart';
 import 'package:smart_life_lw/routes.dart';
 import 'package:smart_life_lw/utils/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -31,8 +33,12 @@ class _SignUpPageState extends State<SignUpPage> {
     _scaffoldKey.currentState
         .showSnackBar(SnackBar(content: Text(result.info)));
     if (result.code == 200) {
-      Toast.show(_context, '注册成功，请登录');
-      Navigator.pushReplacementNamed(context, UIRoute.login_page);
+      Toast.show(_context, '注册成功～');
+      GlobalConfig.userId = result.data;
+      result = await UserUtils.getUserInfo(result.data);
+      if (result.code == 200)
+        GlobalConfig.userInfo = UserInfo.fromMap(result.data);
+      Navigator.pop(_context);
     }
   }
 
@@ -218,7 +224,8 @@ class _SignUpPageState extends State<SignUpPage> {
               child:
                   Text('《汇智Life隐私保护指引》', style: TextStyle(color: Colors.green)),
               onTap: () async {
-                const url = 'http://47.106.203.63/group1/M00/00/00/hzlife/privacy.html';
+                const url =
+                    'http://47.106.203.63/group1/M00/00/00/hzlife/privacy.html';
                 if (await canLaunch(url))
                   await launch(url);
                 else

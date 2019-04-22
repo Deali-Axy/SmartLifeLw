@@ -49,7 +49,8 @@ class _LoginPageState extends State<LoginPage> {
       Toast.show(_context, '登录成功！');
       GlobalConfig.userId = result.data;
       result = await UserUtils.getUserInfo(result.data);
-      if (result.code == 200) GlobalConfig.userInfo = result.data;
+      if (result.code == 200)
+        GlobalConfig.userInfo = UserInfo.fromMap(result.data);
       Navigator.pop(_context);
     }
   }
@@ -100,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(color: Colors.green),
               ),
               onTap: () {
-                Navigator.pushNamed(context, UIRoute.sign_up_page);
+                Navigator.pushReplacementNamed(context, UIRoute.sign_up_page);
               },
             ),
           ],
