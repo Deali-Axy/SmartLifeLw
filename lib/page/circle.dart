@@ -39,6 +39,7 @@ class _SmartCircleState extends State<SmartCircle> {
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            pinned: true,
             actions: <Widget>[
               IconButton(
                   icon: Icon(Icons.refresh),
