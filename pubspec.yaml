@@ -33,6 +33,8 @@ dependencies:
   shared_preferences: ^0.4.1
   # 包信息
   package_info: ^0.4.0+3
+  # 图片缓存
+  cached_network_image: ^0.7.0
 
 
 

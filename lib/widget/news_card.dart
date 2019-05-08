@@ -3,6 +3,7 @@ import 'package:smart_life_lw/config.dart';
 import 'package:smart_life_lw/network/sina_news.dart';
 import 'package:smart_life_lw/network/home_news.dart';
 import 'package:smart_life_lw/utils/toast.dart';
+import 'package:smart_life_lw/widget/network_image_ex.dart';
 
 class NewsCard extends StatefulWidget {
   final String title;
@@ -64,8 +65,8 @@ class _NewsCardState extends State<NewsCard> {
       _currentNews = HomeNews(
           title: sinaNews.title,
           synopsis: sinaNews.summary,
-          bannerUrl: sinaNews.pics[0],
-          bannerAddress: sinaNews.pics[0]);
+          bannerUrl: sinaNews.pics.isEmpty ? '' : sinaNews.pics[0],
+          bannerAddress: sinaNews.pics.isEmpty ? '' : sinaNews.pics[0]);
     }
     if (_currentNews != null) {
       title = _currentNews.title;
@@ -118,7 +119,14 @@ class _NewsCardState extends State<NewsCard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.network(picUrl, fit: BoxFit.fitWidth, width: 400),
+            NetworkImageEx(
+              assetName: 'images/friend_circle_cover_bg.jpg',
+              indicator: true,
+              imageUrl:
+                  picUrl.isEmpty ? 'http://lorempixel.com/400/400/' : picUrl,
+              fit: BoxFit.fitWidth,
+              width: 400,
+            ),
             Divider(height: 10),
             Text(title, style: TextStyle(fontSize: 20)),
             Text(summary, style: TextStyle(fontSize: 14)),

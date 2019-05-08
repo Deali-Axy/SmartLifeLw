@@ -4,6 +4,7 @@ import 'package:smart_life_lw/network/circle_post.dart';
 import 'package:smart_life_lw/page/circle_content.dart';
 import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:smart_life_lw/routes.dart';
+import 'package:smart_life_lw/widget/avatar.dart';
 
 class SmartCircle extends StatefulWidget {
   @override
@@ -75,7 +76,7 @@ class _SmartCircleState extends State<SmartCircle> {
     );
   }
 
-  Widget _buildFlexibleSpaceBar(BuildContext context){
+  Widget _buildFlexibleSpaceBar(BuildContext context) {
     return FlexibleSpaceBar(
       background: Stack(
         children: <Widget>[
@@ -109,8 +110,9 @@ class _SmartCircleState extends State<SmartCircle> {
   Widget _buildItem(CirclePost post) {
     return Card(
       child: ListTile(
-        leading: Image(
-            image: NetworkImage('http://lorempixel.com/40/40?id=${post.id}')),
+        leading: CppAvatar(
+          imageUrl: 'http://lorempixel.com/40/40?id=${post.id}',
+        ),
         title: Text(post.title),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

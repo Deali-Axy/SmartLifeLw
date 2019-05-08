@@ -3,6 +3,7 @@ import 'package:groovin_material_icons/groovin_material_icons.dart';
 import 'package:smart_life_lw/network/user.dart';
 import 'package:smart_life_lw/routes.dart';
 import 'package:smart_life_lw/utils/toast.dart';
+import 'package:smart_life_lw/widget/network_image_ex.dart';
 import 'package:smart_life_lw/widgets.dart';
 import 'package:smart_life_lw/network/circle_post.dart';
 import 'package:smart_life_lw/config.dart';
@@ -91,6 +92,7 @@ class _UserHomePageState extends State<UserHomePage>
       print('圈子列表下拉刷新');
     });
     _circlePosts = await CirclePostUtils.getPosts(GlobalConfig.selectedCircle);
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -102,6 +104,7 @@ class _UserHomePageState extends State<UserHomePage>
     for (int i = 0; i < 12; i++) {
       _pictures.add('http://lorempixel.com/200/200/?id=$i');
     }
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -111,22 +114,7 @@ class _UserHomePageState extends State<UserHomePage>
     return Material(
       child: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
-            actions: <Widget>[
-              _buildPopupMenuButton(),
-            ],
-            backgroundColor: Colors.white,
-            expandedHeight: 240,
-            flexibleSpace: _buildFlexibleSpaceBar(),
-            bottom: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              tabs: _tabs,
-              indicatorColor: Colors.pinkAccent,
-              labelColor: Colors.purpleAccent,
-              unselectedLabelColor: Colors.black,
-            ),
-          ),
+          _buildAppBar(context),
           SliverFillRemaining(
             child: TabBarView(
                 controller: _tabController,
@@ -135,6 +123,26 @@ class _UserHomePageState extends State<UserHomePage>
                 }).toList()),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAppBar(BuildContext context) {
+    return SliverAppBar(
+      actions: <Widget>[
+        _buildPopupMenuButton(),
+      ],
+      brightness: Brightness.dark,
+      backgroundColor: Colors.white,
+      expandedHeight: 240,
+      flexibleSpace: _buildFlexibleSpaceBar(),
+      bottom: TabBar(
+        controller: _tabController,
+        isScrollable: true,
+        tabs: _tabs,
+        indicatorColor: Colors.pinkAccent,
+        labelColor: Colors.purpleAccent,
+        unselectedLabelColor: Colors.black,
       ),
     );
   }
@@ -189,11 +197,16 @@ class _UserHomePageState extends State<UserHomePage>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 CircleAvatar(
-                  backgroundImage: NetworkImage(_userInfo.portrait),
+                  backgroundImage: _userInfo == null
+                      ? AssetImage('images/default_hd_avatar.png')
+                      : NetworkImage(_userInfo.portrait),
                   radius: 35.0,
                 ),
                 SimpleDivider(height: 0, width: 10),
-                Text(_userInfo?.username, style: TextStyle(fontSize: 18)),
+                Text(
+                  _userInfo == null ? '等待加载' : _userInfo.username,
+                  style: TextStyle(fontSize: 18),
+                ),
               ],
             ),
           ),
@@ -212,17 +225,21 @@ class _UserHomePageState extends State<UserHomePage>
             children: <Widget>[
               Text('签名', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text(_userInfo.signature.length == 0
+              Text(_userInfo == null
                   ? '温柔正确的人总是难以生存，因为这世界既不温柔，也不正确'
                   : _userInfo?.signature),
               SimpleDivider(height: 20),
               Text('所在地', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text('${_userInfo?.province} ${_userInfo?.city}'),
+              Text(_userInfo == null
+                  ? '等待加载'
+                  : '${_userInfo.province} ${_userInfo.city}'),
               SimpleDivider(height: 20),
               Text('性别', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text(_userInfo?.gender == 1 ? '男' : '女'),
+              Text(_userInfo == null
+                  ? '等待加载'
+                  : (_userInfo.gender == 1 ? '男' : '女')),
               SimpleDivider(height: 20),
               Text('注册时间', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
@@ -230,7 +247,7 @@ class _UserHomePageState extends State<UserHomePage>
               SimpleDivider(height: 20),
               Text('手机号码', style: TextStyle(color: Colors.grey[600])),
               SimpleDivider(height: 5),
-              Text(_userInfo.phone.toString()),
+              Text(_userInfo == null ? '等待加载' : _userInfo.phone.toString()),
             ],
           ),
         );
@@ -292,7 +309,10 @@ class _UserHomePageState extends State<UserHomePage>
               mainAxisSpacing: 10.0,
               crossAxisCount: 3,
               children: _pictures.map((picUrl) {
-                return Image.network(picUrl);
+                return NetworkImageEx(
+                  assetName: 'images/friend_circle_cover_bg.jpg',
+                  imageUrl: picUrl,
+                );
               }).toList(),
             ),
             onRefresh: _refreshPictures);

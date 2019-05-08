@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_life_lw/network/circle_post.dart';
+import 'package:smart_life_lw/widget/avatar.dart';
 
 class SmartCircleContent extends StatefulWidget {
   final CirclePost post;
@@ -24,11 +25,8 @@ class _SmartCircleContentState extends State<SmartCircleContent> {
     _comments = comments;
     _widgets = [
       ListTile(
-        leading: Image.network(
-          'http://lorempixel.com/40/40?id=${_post.id}',
-          fit: BoxFit.fitWidth,
-          width: 40,
-        ),
+        leading:
+            CppAvatar(imageUrl: 'http://lorempixel.com/40/40?id=${_post.id}'),
         title: Text(_post.nickname),
         subtitle: Text(_post.time),
       ),
@@ -84,11 +82,8 @@ class _SimpleComment extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
-          leading: Image.network(
-            'http://lorempixel.com/40/40?id=$username',
-            fit: BoxFit.fitWidth,
-            width: 40,
-          ),
+          leading:
+              CppAvatar(imageUrl: 'http://lorempixel.com/40/40?id=$username'),
           title: Text(username),
           subtitle: Text(time),
           trailing: Text('$index楼'),
