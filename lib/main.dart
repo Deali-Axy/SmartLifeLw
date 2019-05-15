@@ -37,8 +37,7 @@ class MainApp extends StatelessWidget {
       title: Config.TITLE,
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        // primaryColor: Colors.grey[50],
-        primaryColor: Colors.white,
+        primaryColor: Colors.grey[50],
         scaffoldBackgroundColor: Colors.grey[50],
         dialogBackgroundColor: Colors.grey[50],
         primaryColorBrightness: Brightness.light,

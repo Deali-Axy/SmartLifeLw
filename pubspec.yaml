@@ -35,6 +35,8 @@ dependencies:
   package_info: ^0.4.0+3
   # 图片缓存
   cached_network_image: ^0.7.0
+  # 轮播
+  flutter_swiper: ^1.1.6
 
 
 
@@ -61,6 +63,7 @@ flutter:
   assets:
   - images/
   - images/weather/
+  - images/shop/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

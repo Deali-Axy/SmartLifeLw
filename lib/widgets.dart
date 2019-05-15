@@ -1,6 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:smart_life_lw/extends/sharedelement/shared_element_shop.dart';
+import 'package:smart_life_lw/page/new_home.dart';
+import 'package:smart_life_lw/page/shop.dart';
+import 'package:smart_life_lw/page/shopDetails.dart';
 import 'package:smart_life_lw/page/splash_page.dart';
+import 'package:smart_life_lw/utils/toast.dart';
 import 'routes.dart';
 import 'config.dart';
 
@@ -102,9 +107,12 @@ class HomeDrawer extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundImage: NetworkImage(userInfo.portrait == null
+                      // 恶心的双层三元表达式嵌套
+                      backgroundImage: NetworkImage(userInfo == null
                           ? 'http://lorempixel.com/100/100/'
-                          : userInfo.portrait),
+                          : userInfo.portrait == null
+                              ? 'http://lorempixel.com/100/100/'
+                              : userInfo.portrait),
                       radius: 35.0,
                     ),
                     Container(
@@ -138,6 +146,7 @@ class HomeDrawer extends StatelessWidget {
                   ],
                 ),
                 onTap: () {
+                  Navigator.of(context).pop();
                   if (GlobalConfig.isLogin)
                     Navigator.pushNamed(context, UIRoute.user_home);
                   else
@@ -173,6 +182,7 @@ class HomeDrawer extends StatelessWidget {
               child: Icon(Icons.timer),
             ),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.focus_time);
             },
           ),
@@ -182,50 +192,65 @@ class HomeDrawer extends StatelessWidget {
               child: Icon(Icons.chat),
             ),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.chat);
             },
           ),
           ListTile(
             title: Text('汇智圈子'),
-            leading: CircleAvatar(
-              child: Icon(Icons.cloud_circle),
-            ),
+            leading: CircleAvatar(child: Icon(Icons.cloud_circle)),
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.circle);
             },
           ),
           Divider(),
-//          ListTile(
-//            title: Text('启动页'),
-//            onTap: () {
-//              Navigator.push(context, MaterialPageRoute(builder: (context) {
-//                return Splash();
-//              }));
-//            },
-//          ),
-//          ListTile(
-//            title: Text('extend用户登录'),
-//            onTap: () {
-//              Navigator.pushNamed(context, UIRoute.login_page);
-//            },
-//          ),
-//          ListTile(
-//            title: Text('extend用户注册'),
-//            onTap: () {
-//              Navigator.pushNamed(context, UIRoute.sign_up_page);
-//            },
-//          ),
+          ListTile(
+            title: Text('new home'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return NewHomePage();
+                  }));
+            },
+          ),
+          ListTile(
+            title: Text('商城'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return Myshop();
+              }));
+            },
+          ),
+          ListTile(
+            title: Text('商品详情'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                return ShopDetails();
+              }));
+            },
+          ),
           ListTile(
             title: Text('检查更新'),
             leading: CircleAvatar(
               child: Icon(Icons.update),
             ),
+            onTap: () {
+              Toast.show(context, '开发中...');
+              Navigator.of(context).pop();
+            },
           ),
           ListTile(
             title: Text('设置'),
             leading: CircleAvatar(
               child: Icon(Icons.settings),
             ),
+            onTap: () {
+              Toast.show(context, '开发中，请等待～');
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
