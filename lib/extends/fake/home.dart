@@ -9,9 +9,9 @@ class _FakeHomeState extends State<FakeHome> {
   final fakeImages = [
     'images/fake/1.png',
     'images/fake/2.png',
+    'images/fake/5.png',
     'images/fake/3.png',
     'images/fake/4.png',
-    'images/fake/5.png',
   ];
 
   var index = 0;
