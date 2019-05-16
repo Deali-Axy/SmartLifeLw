@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:smart_life_lw/routes.dart';
 import 'package:smart_life_lw/config.dart';
 import 'package:smart_life_lw/page/home.dart';
+import 'package:smart_life_lw/extends/fake/home.dart';
 
 class Splash extends StatefulWidget {
   @override

@@ -204,18 +204,27 @@ class HomeDrawer extends StatelessWidget {
               Navigator.pushNamed(context, UIRoute.circle);
             },
           ),
-          Divider(),
           ListTile(
-            title: Text('new home'),
+            title: Text('Starter'),
+            leading: CircleAvatar(child: Icon(Icons.star)),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) {
-                    return NewHomePage();
-                  }));
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, UIRoute.starter);
             },
           ),
+          Divider(),
+//          ListTile(
+//            title: Text('new home'),
+//            onTap: () {
+//              Navigator.push(context,
+//                  MaterialPageRoute(builder: (BuildContext context) {
+//                    return NewHomePage();
+//                  }));
+//            },
+//          ),
           ListTile(
             title: Text('商城'),
+            leading: CircleAvatar(child: Icon(Icons.local_mall)),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -225,6 +234,7 @@ class HomeDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text('商品详情'),
+            leading: CircleAvatar(child: Icon(Icons.shop)),
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) {
@@ -238,7 +248,7 @@ class HomeDrawer extends StatelessWidget {
               child: Icon(Icons.update),
             ),
             onTap: () {
-              Toast.show(context, '开发中...');
+              Toast.show(context, '您已经使用最新版本！');
               Navigator.of(context).pop();
             },
           ),
