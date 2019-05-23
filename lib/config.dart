@@ -6,6 +6,10 @@ import 'package:smart_life_lw/network/user.dart';
 
 const TITLE = '汇智Life';
 
+abstract class Resource {
+  static const String title = '汇智Life';
+}
+
 abstract class GlobalConfig {
   static SharedPreferences sharedPreferences;
 

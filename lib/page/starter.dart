@@ -21,23 +21,26 @@ class _StarterPageState extends State<StarterPage> {
       curve: Curves.easeOut,
     );
 
-    return Center(
-      child: Container(
-        padding: EdgeInsets.all(20),
-        child: ListView(
-          controller: _scrollController,
-          children: <Widget>[
-            NewsCard(
-              title: '自己想做的事情就要坚持下去',
-              summary: '不要在意别人的眼光，别人的意见只是让你参考的，自己心里想的才是最重要的，别给自己的人生留遗憾!',
-              picUrl:
-                  'https://yangchengsen.oss-cn-shenzhen.aliyuncs.com/Picture4.png',
-            ),
-            WeatherCard(),
-            HitokotoCard(),
-          ],
-        ),
+    var container = Container(
+      padding: EdgeInsets.all(20),
+      child: ListView(
+        controller: _scrollController,
+        children: <Widget>[
+          WeatherCard(),
+          HitokotoCard(),
+          NewsCard(
+            title: '自己想做的事情就要坚持下去',
+            summary: '不要在意别人的眼光，别人的意见只是让你参考的，自己心里想的才是最重要的，别给自己的人生留遗憾!',
+            picUrl:
+                'https://yangchengsen.oss-cn-shenzhen.aliyuncs.com/Picture4.png',
+          ),
+        ],
       ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(title: Text('汇智Starter')),
+      body: container,
     );
   }
 }

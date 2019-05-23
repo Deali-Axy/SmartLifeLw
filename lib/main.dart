@@ -9,6 +9,7 @@ import 'page/chat.dart';
 import 'page/circle.dart';
 import 'page/focus_time.dart';
 import 'package:smart_life_lw/page/home.dart';
+import 'package:smart_life_lw/page/task.dart';
 import 'package:smart_life_lw/page/starter.dart';
 import 'package:smart_life_lw/page/user/user_home.dart';
 import 'package:smart_life_lw/page/user/edit_profile.dart';
@@ -51,6 +52,7 @@ class MainApp extends StatelessWidget {
       home: Splash(),
       routes: {
         UIRoute.home: (ctx) => AppHome(),
+        UIRoute.task: (ctx) => TaskPage(),
         UIRoute.starter: (ctx) => StarterPage(),
         UIRoute.choose_labels: (context) => ChooseLabels(),
         UIRoute.choose_peoples: (context) => ChoosePeoples(),
