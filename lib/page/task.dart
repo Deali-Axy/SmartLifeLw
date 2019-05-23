@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smart_life_lw/network/schedule.dart';
+import 'package:smart_life_lw/widget/dialog/task_edit.dart';
 import 'package:smart_life_lw/widgets.dart';
 import 'package:smart_life_lw/config.dart';
 
@@ -8,11 +10,30 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+  var _taskList = {
+    '整理读书笔记': Task(completed: true, feEvent: '整理读书笔记', feWeight: 3),
+    '学英语': Task(completed: true, feEvent: '学英语', feWeight: 2),
+    '艺术鉴赏': Task(completed: false, feEvent: '艺术鉴赏', feWeight: 4),
+    '专业学习': Task(completed: false, feEvent: '专业学习', feWeight: 1),
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(Resource.title)),
-      body: _buildMyPlan(context),
+      body: ListView(
+        children: <Widget>[_buildMyPlan(context)],
+      ),
+      floatingActionButton: _buildFloatButton(context),
+    );
+  }
+
+  Widget _buildFloatButton(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.edit),
+      onPressed: () {
+        TaskEditDialog.show(context);
+      },
     );
   }
 
@@ -47,10 +68,8 @@ class _TaskPageState extends State<TaskPage> {
                       color: Color.fromARGB(255, 51, 51, 51),
                     ),
                   ),
-                  _buildTaskItem(context, true, '整理读书笔记 ', 3),
-                  _buildTaskItem(context, true, '学英语', 2),
-                  _buildTaskItem(context, false, '专业学习', 1),
-                  _buildTaskItem(context, false, '艺术鉴赏', 4),
+                  for (var task in _taskList.values)
+                    _buildTaskItem(context, task),
                   Text(
                     '计划表',
                     style: TextStyle(
@@ -99,38 +118,44 @@ class _TaskPageState extends State<TaskPage> {
     return SizedBox(height: 35, child: row);
   }
 
-  Widget _buildTaskItem(
-      BuildContext context, bool finish, String content, int star) {
+  Widget _buildTaskItem(BuildContext context, Task task) {
     return Row(
       children: <Widget>[
         SizedBox(
           width: 20,
           height: 35,
           child: Checkbox(
-            value: finish,
-            onChanged: (value) {},
+            value: task.completed,
+            onChanged: (value) {
+              setState(() {
+                _taskList[task.feEvent].completed = value;
+              });
+            },
             activeColor: Color.fromARGB(255, 74, 144, 226),
           ),
         ),
         SimpleDivider(height: 0, width: 5),
         Expanded(
-          child: Text(
-            content,
-            style: TextStyle(
-              fontSize: 16,
-              color: Color.fromARGB(255, 112, 111, 111),
+          child: GestureDetector(
+            child: Text(
+              task.feEvent,
+              style: TextStyle(
+                fontSize: 16,
+                color: Color.fromARGB(255, 112, 111, 111),
+              ),
             ),
+            onTap: () {
+              TaskEditDialog.show(context, task: task);
+            },
           ),
         ),
-        for (var i = 0; i < star; i++)
+        for (var i = 0; i < task.feWeight; i++)
           Icon(Icons.star, color: Color.fromARGB(255, 245, 166, 35)),
-        for (var i = 0; i < 4 - star; i++)
+        for (var i = 0; i < 4 - task.feWeight; i++)
           Icon(Icons.star_border, color: Color.fromARGB(140, 245, 166, 35)),
       ],
     );
   }
 }
 
-abstract class _Dialogs{
-
-}
+abstract class _Dialogs {}
