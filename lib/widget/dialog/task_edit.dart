@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:smart_life_lw/network/schedule.dart';
 import 'package:smart_life_lw/widgets.dart';
 
+enum TaskEditDialogAction { add, update, delete }
+
+class TaskEditDialogResult {
+  TaskEditDialogAction action;
+  Task task;
+
+  TaskEditDialogResult(this.action, this.task);
+}
+
 class TaskEditDialog extends StatefulWidget {
   final Task task;
 
@@ -10,8 +19,9 @@ class TaskEditDialog extends StatefulWidget {
   @override
   _TaskEditDialogState createState() => _TaskEditDialogState(task);
 
-  static Future<void> show(BuildContext context, {Task task}) async {
-    return showDialog(
+  static Future<TaskEditDialogResult> show(BuildContext context,
+      {Task task}) async {
+    return showDialog<TaskEditDialogResult>(
       context: context,
       barrierDismissible: false,
       builder: (context) {
@@ -22,15 +32,18 @@ class TaskEditDialog extends StatefulWidget {
 }
 
 class _TaskEditDialogState extends State<TaskEditDialog> {
-  double _weight = 1;
+//  double _weight = 1;
   Task _task;
-  TextEditingController _editingController;
+  TextEditingController _editingController = TextEditingController(text: '');
+  TaskEditDialogResult _dialogResult =
+      TaskEditDialogResult(TaskEditDialogAction.add, Task());
 
   _TaskEditDialogState(Task task) {
     if (task != null) {
       _task = task;
+      _editingController = TextEditingController(text: _task.feEvent);
 //      _editingController.value = TextEditingValue(text: _task.feEvent);
-      _weight = _task.feWeight.toDouble();
+//      _weight = _task.feWeight.toDouble();
     }
   }
 
@@ -51,20 +64,21 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
           Text('专注事情'),
           TextFormField(
             controller: _editingController,
-            initialValue: _task?.feEvent,
+//            initialValue: _task?.feEvent,   // 设置了controller就不需要这个初始值了，在controller里设置初始值就好
             maxLines: null,
             decoration: InputDecoration(
               hintText: '请输入专注事情',
               prefixIcon: Icon(Icons.event),
             ),
+            onSaved: (value) => _task.feEvent = value,
           ),
           Divider(height: 20),
           Row(
             children: <Widget>[
               Expanded(child: Text('重要程度')),
-              for (var i = 1; i <= _weight.round(); i++)
+              for (var i = 1; i <= _task.feWeight; i++)
                 Icon(Icons.star, color: Color.fromARGB(255, 245, 166, 35)),
-              for (var i = 1; i <= 4 - _weight.round(); i++)
+              for (var i = 1; i <= 4 - _task.feWeight; i++)
                 Icon(Icons.star_border,
                     color: Color.fromARGB(255, 245, 166, 35)),
             ],
@@ -78,33 +92,41 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
             ),
           ),
           Slider(
-            value: _weight,
+            value: _task.feWeight.toDouble(),
             min: 1,
             max: 4,
             divisions: 3,
-            label: _weight.round().toString(),
+            label: _task.feWeight.toString(),
             onChanged: (value) {
               setState(() {
-                _weight = value;
+                _task.feWeight = value.round();
               });
             },
           ),
           Row(
             children: <Widget>[
               Expanded(child: Text('')),
-              SizedBox(
-                width: flatButtonWidth,
-                height: flatButtonHeight,
-                child: FlatButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text('取消', style: TextStyle(color: Colors.red)),
+              if (_task != null)
+                SizedBox(
+                  width: flatButtonWidth,
+                  height: flatButtonHeight,
+                  child: FlatButton(
+                    onPressed: () {
+                      var result = TaskEditDialogResult(
+                          TaskEditDialogAction.delete, _task);
+                      Navigator.of(context).pop(result);
+                    },
+                    child: Text('删除', style: TextStyle(color: Colors.red)),
+                  ),
                 ),
-              ),
               SizedBox(
                 width: flatButtonWidth,
                 height: flatButtonHeight,
                 child: FlatButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    _task.feEvent = _editingController.text;
+                    Navigator.of(context).pop(_task);
+                  },
                   child: Text('确认'),
                 ),
               ),

@@ -1,4 +1,5 @@
 class Task {
+  int id;
   bool completed;
   String feEvent;
   int feWeight;
@@ -7,6 +8,7 @@ class Task {
 }
 
 class Plan {
+  int id;
   String startTime;
   String endTime;
   String event;

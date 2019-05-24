@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_life_lw/network/schedule.dart';
+import 'package:smart_life_lw/utils/toast.dart';
 import 'package:smart_life_lw/widget/dialog/task_edit.dart';
 import 'package:smart_life_lw/widgets.dart';
 
@@ -13,7 +14,10 @@ class SchedulePage extends StatefulWidget {
   _SchedulePageState createState() => _SchedulePageState();
 }
 
-class _SchedulePageState extends State<SchedulePage> {
+class _SchedulePageState extends State<SchedulePage>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
   var _taskList = {
     '整理读书笔记': Task(completed: true, feEvent: '整理读书笔记', feWeight: 3),
     '学英语': Task(completed: true, feEvent: '学英语', feWeight: 2),
@@ -22,23 +26,63 @@ class _SchedulePageState extends State<SchedulePage> {
   };
 
   @override
+  void initState() {
+    _tabController = TabController(length: widget.tabs.length, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var s = Scaffold(
-      appBar: AppBar(title: Text('我的计划')),
+    var tabBar = TabBar(
+      controller: _tabController,
+      isScrollable: true,
+      labelStyle: TextStyle(fontSize: 16),
+      tabs: widget.tabs.map((tab) => tab).toList(),
     );
 
-    return DefaultTabController(
-      length: widget.tabs.length,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('我的计划'),
-          bottom: TabBar(tabs: widget.tabs),
-        ),
-        body: TabBarView(
-          children:
-              widget.tabs.map((tab) => _buildTabView(context, tab)).toList(),
-        ),
+    var tabBarView = TabBarView(
+      controller: _tabController,
+      children: widget.tabs.map((tab) => _buildTabView(context, tab)).toList(),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('我的计划'),
       ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            height: 38,
+            child: tabBar,
+          ),
+          Expanded(child: tabBarView),
+        ],
+      ),
+      floatingActionButton: _buildFloatingButton(context),
+    );
+  }
+
+  Widget _buildFloatingButton(BuildContext context) {
+    return FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: () {
+        switch (_tabController.index) {
+          case 0:
+            break;
+          case 1:
+            if (_taskList.length < 4)
+              TaskEditDialog.show(context);
+            else
+              Toast.show(context, '最多只能添加4个专注事情！');
+            break;
+        }
+      },
     );
   }
 
@@ -48,6 +92,8 @@ class _SchedulePageState extends State<SchedulePage> {
         return ListView(children: <Widget>[_buildPlanForm(context)]);
       case '专注事情':
         return ListView(children: <Widget>[_buildTask(context)]);
+      default:
+        return Center();
     }
   }
 
@@ -179,8 +225,11 @@ class _SchedulePageState extends State<SchedulePage> {
                 color: Color.fromARGB(255, 112, 111, 111),
               ),
             ),
-            onTap: () {
-              TaskEditDialog.show(context, task: task);
+            onTap: () async {
+              var resultTask = await TaskEditDialog.show(context, task: task);
+              setState(() {
+                if (resultTask != null) _taskList[task.feEvent] = resultTask;
+              });
             },
           ),
         ),
