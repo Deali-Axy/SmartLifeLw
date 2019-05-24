@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_life_lw/network/schedule.dart';
+import 'package:smart_life_lw/widgets.dart';
 
 class TaskEditDialog extends StatefulWidget {
   final Task task;
@@ -68,6 +69,14 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
                     color: Color.fromARGB(255, 245, 166, 35)),
             ],
           ),
+          SimpleDivider(height: 10),
+          Text(
+            '滑动下方Slider设置该事件的重要程度',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 12,
+            ),
+          ),
           Slider(
             value: _weight,
             min: 1,
@@ -119,7 +128,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
         child: Center(
           child: SizedBox(
             width: 300,
-            height: 220,
+            height: 240,
             child: Material(
               elevation: 24.0,
               color: Theme.of(context).dialogBackgroundColor,

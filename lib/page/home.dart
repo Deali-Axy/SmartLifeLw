@@ -41,13 +41,13 @@ class _AppPageState extends State<_AppPage> {
       ),
       drawer: HomeDrawer(),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           _buildSchedule(context),
           RaisedButton(
             onPressed: () {
-              Navigator.pushNamed(context, UIRoute.task);
+              Navigator.pushNamed(context, UIRoute.schedule);
             },
             child: Text('我的计划', style: TextStyle(color: Colors.white)),
           ),

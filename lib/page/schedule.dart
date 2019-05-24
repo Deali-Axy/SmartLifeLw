@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:smart_life_lw/network/schedule.dart';
 import 'package:smart_life_lw/widget/dialog/task_edit.dart';
 import 'package:smart_life_lw/widgets.dart';
-import 'package:smart_life_lw/config.dart';
 
-class TaskPage extends StatefulWidget {
+class SchedulePage extends StatefulWidget {
+  final List<Tab> tabs = <Tab>[
+    Tab(text: '计划表'),
+    Tab(text: '专注事情'),
+  ];
+
   @override
-  _TaskPageState createState() => _TaskPageState();
+  _SchedulePageState createState() => _SchedulePageState();
 }
 
-class _TaskPageState extends State<TaskPage> {
+class _SchedulePageState extends State<SchedulePage> {
   var _taskList = {
     '整理读书笔记': Task(completed: true, feEvent: '整理读书笔记', feWeight: 3),
     '学英语': Task(completed: true, feEvent: '学英语', feWeight: 2),
@@ -19,25 +23,35 @@ class _TaskPageState extends State<TaskPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(Resource.title)),
-      body: ListView(
-        children: <Widget>[_buildMyPlan(context)],
+    var s = Scaffold(
+      appBar: AppBar(title: Text('我的计划')),
+    );
+
+    return DefaultTabController(
+      length: widget.tabs.length,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('我的计划'),
+          bottom: TabBar(tabs: widget.tabs),
+        ),
+        body: TabBarView(
+          children:
+              widget.tabs.map((tab) => _buildTabView(context, tab)).toList(),
+        ),
       ),
-      floatingActionButton: _buildFloatButton(context),
     );
   }
 
-  Widget _buildFloatButton(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.edit),
-      onPressed: () {
-        TaskEditDialog.show(context);
-      },
-    );
+  Widget _buildTabView(BuildContext context, Tab tab) {
+    switch (tab.text) {
+      case '计划表':
+        return ListView(children: <Widget>[_buildPlanForm(context)]);
+      case '专注事情':
+        return ListView(children: <Widget>[_buildTask(context)]);
+    }
   }
 
-  Widget _buildMyPlan(BuildContext context) {
+  Widget _buildPlanForm(BuildContext context) {
     var card = Card(
       margin: EdgeInsets.fromLTRB(4, 10, 4, 8),
       shape: const RoundedRectangleBorder(
@@ -49,7 +63,7 @@ class _TaskPageState extends State<TaskPage> {
           Container(
             margin: EdgeInsets.only(left: 12, top: 6),
             child: Text(
-              '我的计划',
+              '在这里编辑您今天的计划',
               style: TextStyle(
                 fontSize: 16,
                 color: Color.fromARGB(255, 173, 174, 173),
@@ -61,27 +75,48 @@ class _TaskPageState extends State<TaskPage> {
             child: Center(
               child: Column(
                 children: <Widget>[
-                  Text(
-                    '专注事情',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 51, 51, 51),
-                    ),
-                  ),
-                  for (var task in _taskList.values)
-                    _buildTaskItem(context, task),
-                  Text(
-                    '计划表',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 51, 51, 51),
-                    ),
-                  ),
                   _buildPlanItem(context, '7:30', '起床、吃早餐'),
                   _buildPlanItem(context, '8:30', '专注时间'),
                   _buildPlanItem(context, '11:30', '午饭午休'),
                   _buildPlanItem(context, '14:30', '专注时间'),
                   _buildPlanItem(context, '17:30', '上课'),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    return card;
+  }
+
+  Widget _buildTask(BuildContext context) {
+    var card = Card(
+      margin: EdgeInsets.fromLTRB(4, 10, 4, 8),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(14.0))), //设置圆角
+      elevation: 2,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(left: 12, top: 6),
+            child: Text(
+              '您每天可以设置四件专注事情',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color.fromARGB(255, 173, 174, 173),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(22, 5, 16, 20),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  for (var task in _taskList.values)
+                    _buildTaskItem(context, task),
                 ],
               ),
             ),
@@ -157,4 +192,3 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 }
-

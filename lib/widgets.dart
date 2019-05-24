@@ -187,6 +187,16 @@ class HomeDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            title: Text('我的任务'),
+            leading: CircleAvatar(
+              child: Icon(Icons.list),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, UIRoute.task);
+            },
+          ),
+          ListTile(
             title: Text('呼叫Life'),
             leading: CircleAvatar(
               child: Icon(Icons.chat),
