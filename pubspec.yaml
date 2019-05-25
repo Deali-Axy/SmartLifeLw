@@ -37,7 +37,7 @@ dependencies:
   cached_network_image: ^0.7.0
   # 轮播
   flutter_swiper: ^1.1.6
-
+  uuid: 2.0.0
 
 
 dev_dependencies:
@@ -61,10 +61,10 @@ flutter:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
   assets:
-  - images/
-  - images/weather/
-  - images/shop/
-  - images/fake/
+    - images/
+    - images/weather/
+    - images/shop/
+    - images/fake/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.

@@ -32,7 +32,7 @@ class _TaskPageState extends State<TaskPage> {
     return FloatingActionButton(
       child: Icon(Icons.edit),
       onPressed: () {
-        TaskEditDialog.show(context);
+        TaskEditDialog.show(context, TaskEditDialogAction.add);
       },
     );
   }
@@ -145,7 +145,11 @@ class _TaskPageState extends State<TaskPage> {
               ),
             ),
             onTap: () {
-              TaskEditDialog.show(context, task: task);
+              TaskEditDialog.show(
+                context,
+                TaskEditDialogAction.update,
+                task: task,
+              );
             },
           ),
         ),
@@ -157,4 +161,3 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 }
-

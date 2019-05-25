@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'dart:ui' as ui;
 
 class ImageZoomable extends StatefulWidget {
-  ImageZoomable(this.image, {Key key, this.scale = 2.0, this.onTap}) : super(key: key);
+  ImageZoomable(this.image, {Key key, this.scale = 2.0, this.onTap})
+      : super(key: key);
 
   final ImageProvider image;
   final double scale;
@@ -42,14 +43,16 @@ class _ImageZoomableState extends State<ImageZoomable> {
     }
     double newZoom = _previousZoom * details.scale;
     bool tooZoomedIn = _image.width * _scale / newZoom <= size.width ||
-        _image.height * _scale / newZoom <= size.height || newZoom <= 0.8;
+        _image.height * _scale / newZoom <= size.height ||
+        newZoom <= 0.8;
     if (tooZoomedIn) {
       return;
     }
 
     setState(() {
       _zoom = newZoom;
-      final Offset normalizedOffset = (_startingFocalPoint - _previousOffset) / _previousZoom;
+      final Offset normalizedOffset =
+          (_startingFocalPoint - _previousOffset) / _previousZoom;
       _offset = details.focalPoint / _scale - normalizedOffset * _zoom;
     });
   }
@@ -68,6 +71,8 @@ class _ImageZoomableState extends State<ImageZoomable> {
 
   void _resolveImage() {
     _imageStream = widget.image.resolve(createLocalImageConfiguration(context));
+    // flutter v1.6.3 修复
+//    _imageStream.addListener(ImageStreamListener(_handleImageLoaded));
     _imageStream.addListener(_handleImageLoaded);
   }
 
@@ -92,12 +97,10 @@ class _ImageZoomableState extends State<ImageZoomable> {
         transform: new Matrix4.diagonal3Values(_scale, _scale, _scale),
         child: new CustomPaint(
             painter: new _ImageZoomablePainter(
-              image: _image,
-              offset: _offset,
-              zoom: _zoom / _scale,
-            )
-        )
-    );
+          image: _image,
+          offset: _offset,
+          zoom: _zoom / _scale,
+        )));
   }
 
   @override

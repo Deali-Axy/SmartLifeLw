@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_life_lw/network/schedule.dart';
 import 'package:smart_life_lw/utils/toast.dart';
 import 'package:smart_life_lw/widget/dialog/task_edit.dart';
+import 'package:smart_life_lw/widget/dialog/plan_edit.dart';
 import 'package:smart_life_lw/widgets.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -18,16 +19,33 @@ class _SchedulePageState extends State<SchedulePage>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
 
-  var _taskList = {
-    '整理读书笔记': Task(completed: true, feEvent: '整理读书笔记', feWeight: 3),
-    '学英语': Task(completed: true, feEvent: '学英语', feWeight: 2),
-    '艺术鉴赏': Task(completed: false, feEvent: '艺术鉴赏', feWeight: 4),
-    '专业学习': Task(completed: false, feEvent: '专业学习', feWeight: 1),
-  };
+  var _taskList = {};
+  var _planList = {};
 
   @override
   void initState() {
     _tabController = TabController(length: widget.tabs.length, vsync: this);
+    var tasks = <Task>[
+      Task(completed: true, feEvent: '整理读书笔记', feWeight: 3),
+      Task(completed: true, feEvent: '学英语', feWeight: 2),
+      Task(completed: false, feEvent: '艺术鉴赏', feWeight: 4),
+      Task(completed: false, feEvent: '专业学习', feWeight: 1),
+    ];
+    var plans = <Plan>[
+      Plan(startTime: '7:30', endTime: '7:30', event: '起床、吃早餐'),
+      Plan(startTime: '8:30', endTime: '7:30', event: '专注时间'),
+      Plan(startTime: '11:30', endTime: '7:30', event: '午饭午休'),
+      Plan(startTime: '14:30', endTime: '7:30', event: '专注时间'),
+      Plan(startTime: '17:30', endTime: '7:30', event: '上课'),
+    ];
+    for (var item in tasks) {
+      print(item);
+      _taskList[item.id] = item;
+    }
+    for (var item in plans) {
+      print(item);
+      _planList[item.id] = item;
+    }
     super.initState();
   }
 
@@ -71,14 +89,26 @@ class _SchedulePageState extends State<SchedulePage>
   Widget _buildFloatingButton(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add),
-      onPressed: () {
+      onPressed: () async {
         switch (_tabController.index) {
           case 0:
+            var result =
+                await PlanEditDialog.show(context, PlanEditDialogAction.add);
+            print('recieve plan: ${result.action.toString()}');
+            if (result.action == PlanEditDialogAction.add)
+              setState(() {
+                _planList[result.plan.id] = result.plan;
+              });
             break;
           case 1:
-            if (_taskList.length < 4)
-              TaskEditDialog.show(context);
-            else
+            if (_taskList.length < 4) {
+              var result =
+                  await TaskEditDialog.show(context, TaskEditDialogAction.add);
+              if (result.action == TaskEditDialogAction.add)
+                setState(() {
+                  _taskList[result.task.id] = result.task;
+                });
+            } else
               Toast.show(context, '最多只能添加4个专注事情！');
             break;
         }
@@ -121,11 +151,8 @@ class _SchedulePageState extends State<SchedulePage>
             child: Center(
               child: Column(
                 children: <Widget>[
-                  _buildPlanItem(context, '7:30', '起床、吃早餐'),
-                  _buildPlanItem(context, '8:30', '专注时间'),
-                  _buildPlanItem(context, '11:30', '午饭午休'),
-                  _buildPlanItem(context, '14:30', '专注时间'),
-                  _buildPlanItem(context, '17:30', '上课'),
+                  for (var plan in _getSortedPlanList())
+                    _buildPlanItem(context, plan),
                 ],
               ),
             ),
@@ -174,23 +201,42 @@ class _SchedulePageState extends State<SchedulePage>
     return card;
   }
 
-  Widget _buildPlanItem(BuildContext context, String time, String content) {
+  Widget _buildPlanItem(BuildContext context, Plan plan) {
     var row = Row(
 //      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          time,
+          plan.startTime,
           style: TextStyle(
             fontSize: 16,
             color: Color.fromARGB(255, 112, 111, 111),
           ),
         ),
         SimpleDivider(height: 0, width: 6),
-        Text(
-          content,
-          style: TextStyle(
-            fontSize: 16,
-            color: Color.fromARGB(255, 112, 111, 111),
+        Expanded(
+          child: GestureDetector(
+            child: Text(
+              plan.event,
+              style: TextStyle(
+                fontSize: 16,
+                color: Color.fromARGB(255, 112, 111, 111),
+              ),
+            ),
+            onTap: () async {
+              var result = await PlanEditDialog.show(
+                context,
+                PlanEditDialogAction.update,
+                plan: plan,
+              );
+              if (result.action == PlanEditDialogAction.delete)
+                setState(() {
+                  _planList.remove(result.plan.id);
+                });
+              if (result.action == PlanEditDialogAction.update)
+                setState(() {
+                  _planList[result.plan.id] = result.plan;
+                });
+            },
           ),
         ),
       ],
@@ -209,7 +255,7 @@ class _SchedulePageState extends State<SchedulePage>
             value: task.completed,
             onChanged: (value) {
               setState(() {
-                _taskList[task.feEvent].completed = value;
+                _taskList[task.id].completed = value;
               });
             },
             activeColor: Color.fromARGB(255, 74, 144, 226),
@@ -226,10 +272,23 @@ class _SchedulePageState extends State<SchedulePage>
               ),
             ),
             onTap: () async {
-              var resultTask = await TaskEditDialog.show(context, task: task);
-              setState(() {
-                if (resultTask != null) _taskList[task.feEvent] = resultTask;
-              });
+              var result = await TaskEditDialog.show(
+                  context, TaskEditDialogAction.update,
+                  task: task);
+              switch (result.action) {
+                case TaskEditDialogAction.add:
+                  _taskList[result.task.id] = result.task;
+                  break;
+                case TaskEditDialogAction.update:
+                  _taskList[result.task.id] = result.task;
+                  break;
+                case TaskEditDialogAction.delete:
+                  setState(() {
+                    _taskList.remove(result.task.id);
+                  });
+                  break;
+              }
+              setState(() {});
             },
           ),
         ),
@@ -239,5 +298,16 @@ class _SchedulePageState extends State<SchedulePage>
           Icon(Icons.star_border, color: Color.fromARGB(140, 245, 166, 35)),
       ],
     );
+  }
+
+  /// 获取排序后的计划表
+  List<Plan> _getSortedPlanList() {
+    var tempList = List<Plan>();
+    // 拷贝 _planList 里的所有对象
+    for (var plan in _planList.values) {
+      tempList.add(plan);
+    }
+//    tempList.sort((p1, p2) => p1.id - p2.id);
+    return tempList;
   }
 }

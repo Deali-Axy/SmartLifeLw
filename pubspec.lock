@@ -115,7 +115,7 @@ packages:
       name: image_picker
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.4"
+    version: "0.5.4+3"
   matcher:
     dependency: transitive
     description:
@@ -262,12 +262,12 @@ packages:
     source: hosted
     version: "3.0.3"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.0"
   vector_math:
     dependency: transitive
     description:

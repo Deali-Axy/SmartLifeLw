@@ -13,38 +13,45 @@ class TaskEditDialogResult {
 
 class TaskEditDialog extends StatefulWidget {
   final Task task;
+  final TaskEditDialogAction action;
 
-  TaskEditDialog({this.task});
+  TaskEditDialog({this.action, this.task});
 
   @override
-  _TaskEditDialogState createState() => _TaskEditDialogState(task);
+  _TaskEditDialogState createState() =>
+      _TaskEditDialogState(action, task: task);
 
-  static Future<TaskEditDialogResult> show(BuildContext context,
+  static Future<TaskEditDialogResult> show(
+      BuildContext context, TaskEditDialogAction action,
       {Task task}) async {
     return showDialog<TaskEditDialogResult>(
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return TaskEditDialog(task: task);
+        return TaskEditDialog(action: action, task: task);
       },
     );
   }
 }
 
 class _TaskEditDialogState extends State<TaskEditDialog> {
-//  double _weight = 1;
   Task _task;
-  TextEditingController _editingController = TextEditingController(text: '');
-  TaskEditDialogResult _dialogResult =
-      TaskEditDialogResult(TaskEditDialogAction.add, Task());
+  TaskEditDialogAction _action;
+  TextEditingController _editingController;
+  TaskEditDialogResult _dialogResult;
 
-  _TaskEditDialogState(Task task) {
-    if (task != null) {
+  _TaskEditDialogState(TaskEditDialogAction action, {Task task}) {
+    _action = action;
+    if (action == TaskEditDialogAction.update && task != null) {
       _task = task;
       _editingController = TextEditingController(text: _task.feEvent);
-//      _editingController.value = TextEditingValue(text: _task.feEvent);
-//      _weight = _task.feWeight.toDouble();
     }
+    if (action == TaskEditDialogAction.add) {
+      _task = Task(completed: false, feEvent: '', feWeight: 1);
+    }
+
+    _editingController = TextEditingController(text: _task.feEvent);
+    _dialogResult = TaskEditDialogResult(_action, _task);
   }
 
   @override
@@ -64,7 +71,6 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
           Text('专注事情'),
           TextFormField(
             controller: _editingController,
-//            initialValue: _task?.feEvent,   // 设置了controller就不需要这个初始值了，在controller里设置初始值就好
             maxLines: null,
             decoration: InputDecoration(
               hintText: '请输入专注事情',
@@ -106,15 +112,14 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
           Row(
             children: <Widget>[
               Expanded(child: Text('')),
-              if (_task != null)
+              if (_action == TaskEditDialogAction.update)
                 SizedBox(
                   width: flatButtonWidth,
                   height: flatButtonHeight,
                   child: FlatButton(
                     onPressed: () {
-                      var result = TaskEditDialogResult(
-                          TaskEditDialogAction.delete, _task);
-                      Navigator.of(context).pop(result);
+                      _dialogResult=TaskEditDialogResult(TaskEditDialogAction.delete, _task);
+                      Navigator.of(context).pop(_dialogResult);
                     },
                     child: Text('删除', style: TextStyle(color: Colors.red)),
                   ),
@@ -125,7 +130,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
                 child: FlatButton(
                   onPressed: () {
                     _task.feEvent = _editingController.text;
-                    Navigator.of(context).pop(_task);
+                    Navigator.of(context).pop(_dialogResult);
                   },
                   child: Text('确认'),
                 ),

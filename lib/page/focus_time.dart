@@ -54,12 +54,12 @@ class _FocusTimeState extends State<FocusTime> {
               Divider(height: 1, indent: 10),
               RaisedButton(
                 child: Text('设置开始时间'),
-                onPressed: () {
-                  Future<TimeOfDay> selectedTime = showTimePicker(
+                onPressed: () async {
+                  var selectedTime = await showTimePicker(
                     initialTime: TimeOfDay.now(),
                     context: context,
                   );
-                  GlobalConfig.startTime = selectedTime as TimeOfDay;
+                  GlobalConfig.startTime = selectedTime;
                   setState(() {});
                 },
               ),
@@ -73,12 +73,12 @@ class _FocusTimeState extends State<FocusTime> {
               Divider(height: 1, indent: 10),
               RaisedButton(
                 child: Text('设置结束时间'),
-                onPressed: () {
-                  Future<TimeOfDay> selectedTime = showTimePicker(
+                onPressed: () async {
+                  var selectedTime = await showTimePicker(
                     initialTime: TimeOfDay.now(),
                     context: context,
                   );
-                  GlobalConfig.endTime = selectedTime as TimeOfDay;
+                  GlobalConfig.endTime = selectedTime;
                   print(GlobalConfig.endTime.toString());
                   setState(() {});
                 },
