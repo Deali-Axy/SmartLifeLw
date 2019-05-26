@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_life_lw/network/schedule.dart';
+import 'package:smart_life_lw/utils/toast.dart';
 import 'package:smart_life_lw/widgets.dart';
 
 enum PlanEditDialogAction { add, update, delete }
@@ -164,6 +165,10 @@ class _PlanEditDialogState extends State<PlanEditDialog> {
                 height: flatButtonHeight,
                 child: FlatButton(
                   onPressed: () {
+                    if (_editingController.text.length == 0) {
+                      Toast.show(context, '没有输入计划内容呢！');
+                      return;
+                    }
                     _plan.event = _editingController.text;
                     Navigator.of(context).pop(_dialogResult);
                   },
@@ -190,7 +195,7 @@ class _PlanEditDialogState extends State<PlanEditDialog> {
         child: Center(
           child: SizedBox(
             width: 300,
-            height: 220,
+            height: 230,
             child: Material(
               elevation: 24.0,
               color: Theme.of(context).dialogBackgroundColor,

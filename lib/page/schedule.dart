@@ -72,6 +72,7 @@ class _SchedulePageState extends State<SchedulePage>
     return Scaffold(
       appBar: AppBar(
         title: Text('我的计划'),
+        actions: <Widget>[_buildRefreshButton(context)],
       ),
       body: Column(
         children: <Widget>[
@@ -86,6 +87,20 @@ class _SchedulePageState extends State<SchedulePage>
     );
   }
 
+  Widget _buildRefreshButton(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.refresh),
+      onPressed: () {
+        switch (_tabController.index) {
+          case 0: // 计划表
+            break;
+          case 1: // 专注事情
+            break;
+        }
+      },
+    );
+  }
+
   Widget _buildFloatingButton(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add),
@@ -94,17 +109,19 @@ class _SchedulePageState extends State<SchedulePage>
           case 0:
             var result =
                 await PlanEditDialog.show(context, PlanEditDialogAction.add);
-            print('recieve plan: ${result.action.toString()}');
-            if (result.action == PlanEditDialogAction.add)
-              setState(() {
-                _planList[result.plan.id] = result.plan;
-              });
+            if (result != null) {
+              print('recieve plan: ${result.action.toString()}');
+              if (result.action == PlanEditDialogAction.add)
+                setState(() {
+                  _planList[result.plan.id] = result.plan;
+                });
+            }
             break;
           case 1:
             if (_taskList.length < 4) {
               var result =
                   await TaskEditDialog.show(context, TaskEditDialogAction.add);
-              if (result.action == TaskEditDialogAction.add)
+              if (result != null) if (result.action == TaskEditDialogAction.add)
                 setState(() {
                   _taskList[result.task.id] = result.task;
                 });
