@@ -74,13 +74,52 @@ abstract class ScheduleUtils {
         'http://47.106.203.63:9091/timeadmin/getCurrentEvent?sessionId=$sessionId';
     var responseStr = await get(url);
     Map jsonMap = jsonDecode(responseStr);
-    var response = Response(
-        code: jsonMap['code'], info: jsonMap['info'], data: jsonMap['data']);
+
+    Response response;
+    try {
+      response = Response(
+          code: jsonMap['code'], info: jsonMap['info'], data: jsonMap['data']);
+    } catch (exp) {
+      response = Response(code: -1, info: '请求失败！');
+    }
+    return response;
+  }
+
+  static Future<Response> updateDailySchedule(
+      int sessionId, List tasks, List plans) async {
+    var url = 'http://47.106.203.63:9091/timeadmin/updateDailySchedule';
+    var requestMap = {
+      'sessionId': sessionId,
+      'focusEventFormList': tasks.map((task) => task.toMap()).toList(),
+      'scheduleEventList': plans.map((plan) => plan.toMap()).toList(),
+    };
+    var requestStr = jsonEncode(requestMap);
+    var responseStr = await post(url, requestMap);
+    print(responseStr);
+    var responseMap = jsonDecode(responseStr);
+
+    Response response;
+    try {
+      response = Response(
+          code: responseMap['code'],
+          info: responseMap['info'],
+          data: requestMap['data']);
+    } catch (exp) {
+      response = Response(code: -1, info: '请求失败！');
+    }
 
     return response;
   }
 
-  static Future<Response> updateDailySchedule(int sessionId)async{
-    
+  /// 自我评分接口
+  static Future<String> selfEvaluation(int sessionId, int score) async {
+    var url =
+        'http://47.106.203.63:9091/timeadmin/selfEvaluation?sessionId=$sessionId&score=$score';
+    var responseStr = await get(url);
+    var responseMap = jsonDecode(responseStr);
+    if (responseMap['code'] == 200)
+      return responseMap['data']['returnMsg'];
+    else
+      return responseMap['info'];
   }
 }

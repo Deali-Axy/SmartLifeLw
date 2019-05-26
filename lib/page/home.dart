@@ -195,8 +195,8 @@ abstract class _Dialogs {
     );
   }
 
-  static void evaluate(BuildContext context) {
-    showDialog(
+  static Future<int> evaluate(BuildContext context) {
+    return showDialog<int>(
       context: context,
       builder: (context) {
         return new SimpleDialog(
@@ -212,20 +212,20 @@ abstract class _Dialogs {
             SimpleDialogOption(
               child: Text("不太好", style: TextStyle(fontSize: 12)),
               onPressed: () {
-                Navigator.of(context).pop("SimpleDialogOption One");
+                Navigator.of(context).pop(1);
                 result(context);
               },
             ),
             SimpleDialogOption(
               child: new Text("还可以", style: TextStyle(fontSize: 12)),
               onPressed: () {
-                Navigator.of(context).pop("SimpleDialogOption Two");
+                Navigator.of(context).pop(2);
               },
             ),
             SimpleDialogOption(
               child: new Text("很好", style: TextStyle(fontSize: 12)),
               onPressed: () {
-                Navigator.of(context).pop("SimpleDialogOption Three");
+                Navigator.of(context).pop(3);
               },
             ),
           ],
@@ -234,7 +234,7 @@ abstract class _Dialogs {
     );
   }
 
-  static Future<void> result(BuildContext context) async{
+  static Future<void> result(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -250,7 +250,8 @@ abstract class _Dialogs {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text('再接再厉', style: TextStyle(fontWeight: FontWeight.bold)),
+              child:
+                  Text('再接再厉', style: TextStyle(fontWeight: FontWeight.bold)),
               onPressed: () {
                 Navigator.of(context).pop();
               },

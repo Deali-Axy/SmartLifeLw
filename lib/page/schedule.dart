@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_life_lw/config.dart';
 import 'package:smart_life_lw/network/schedule.dart';
 import 'package:smart_life_lw/utils/toast.dart';
 import 'package:smart_life_lw/widget/dialog/task_edit.dart';
@@ -90,13 +91,21 @@ class _SchedulePageState extends State<SchedulePage>
   Widget _buildRefreshButton(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.refresh),
-      onPressed: () {
+      onPressed: () async {
         switch (_tabController.index) {
           case 0: // 计划表
+            Toast.show(context, '正在同步计划表~');
             break;
           case 1: // 专注事情
+            Toast.show(context, '正在同步专注事情~');
             break;
         }
+        var response = await ScheduleUtils.updateDailySchedule(
+          GlobalConfig.userId,
+          _taskList.values.toList(),
+          _planList.values.toList(),
+        );
+        Toast.show(context, response.info);
       },
     );
   }
