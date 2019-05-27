@@ -36,8 +36,7 @@ class _SchedulePageState extends State<SchedulePage>
       Plan(startTime: '7:30', endTime: '8:00', event: '起床、吃早餐'),
       Plan(startTime: '8:30', endTime: '9:30', event: '专注时间'),
       Plan(startTime: '11:30', endTime: '12:30', event: '午饭午休'),
-      Plan(startTime: '14:30', endTime: '15:30', event: '专注时间'),
-      Plan(startTime: '17:30', endTime: '18:30', event: '上课'),
+      Plan(startTime: '17:30', endTime: '22:30', event: '专注时间'),
     ];
     for (var item in tasks) {
       print(item);
