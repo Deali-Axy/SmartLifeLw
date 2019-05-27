@@ -7,9 +7,11 @@ class Task {
   bool completed;
   String feEvent;
   int feWeight;
+  int interuptCount;
 
   Task({this.id, this.completed, this.feEvent, this.feWeight}) {
     id = Uuid().v4();
+    interuptCount = 0;
   }
 
   @override
@@ -19,10 +21,11 @@ class Task {
 
   Map toMap() {
     return {
-      'id': id,
+      // 'id': id,
       'completed': completed,
       'feEvent': feEvent,
-      'feWeight': feWeight
+      'feWeight': feWeight,
+      'interuptCount': interuptCount,
     };
   }
 
@@ -48,10 +51,10 @@ class Plan {
 
   Map toMap() {
     return {
-      'id': id,
-      'startTime': startTime,
-      'endTime': endTime,
-      'event': event
+      // 'id': id,
+      'dseStartTime': startTime,
+      'dseEndTime': endTime,
+      'dseEvent': event
     };
   }
 
@@ -69,6 +72,7 @@ class Response {
 }
 
 abstract class ScheduleUtils {
+  /// 获取当前计划
   static Future<Response> getCurrentEvent(int sessionId) async {
     var url =
         'http://47.106.203.63:9091/timeadmin/getCurrentEvent?sessionId=$sessionId';
@@ -85,6 +89,7 @@ abstract class ScheduleUtils {
     return response;
   }
 
+  /// 更新每日计划
   static Future<Response> updateDailySchedule(
       int sessionId, List tasks, List plans) async {
     var url = 'http://47.106.203.63:9091/timeadmin/updateDailySchedule';

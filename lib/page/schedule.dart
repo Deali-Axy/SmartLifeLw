@@ -33,11 +33,11 @@ class _SchedulePageState extends State<SchedulePage>
       Task(completed: false, feEvent: '专业学习', feWeight: 1),
     ];
     var plans = <Plan>[
-      Plan(startTime: '7:30', endTime: '7:30', event: '起床、吃早餐'),
-      Plan(startTime: '8:30', endTime: '7:30', event: '专注时间'),
-      Plan(startTime: '11:30', endTime: '7:30', event: '午饭午休'),
-      Plan(startTime: '14:30', endTime: '7:30', event: '专注时间'),
-      Plan(startTime: '17:30', endTime: '7:30', event: '上课'),
+      Plan(startTime: '7:30', endTime: '8:00', event: '起床、吃早餐'),
+      Plan(startTime: '8:30', endTime: '9:30', event: '专注时间'),
+      Plan(startTime: '11:30', endTime: '12:30', event: '午饭午休'),
+      Plan(startTime: '14:30', endTime: '15:30', event: '专注时间'),
+      Plan(startTime: '17:30', endTime: '18:30', event: '上课'),
     ];
     for (var item in tasks) {
       print(item);
