@@ -11,10 +11,10 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   var _taskList = {
-    '整理读书笔记': Task(completed: true, feEvent: '整理读书笔记', feWeight: 3),
-    '学英语': Task(completed: true, feEvent: '学英语', feWeight: 2),
-    '艺术鉴赏': Task(completed: false, feEvent: '艺术鉴赏', feWeight: 4),
-    '专业学习': Task(completed: false, feEvent: '专业学习', feWeight: 1),
+    '整理读书笔记': Task(completed: true, event: '整理读书笔记', weight: 3),
+    '学英语': Task(completed: true, event: '学英语', weight: 2),
+    '艺术鉴赏': Task(completed: false, event: '艺术鉴赏', weight: 4),
+    '专业学习': Task(completed: false, event: '专业学习', weight: 1),
   };
 
   @override
@@ -128,7 +128,7 @@ class _TaskPageState extends State<TaskPage> {
             value: task.completed,
             onChanged: (value) {
               setState(() {
-                _taskList[task.feEvent].completed = value;
+                _taskList[task.event].completed = value;
               });
             },
             activeColor: Color.fromARGB(255, 74, 144, 226),
@@ -138,7 +138,7 @@ class _TaskPageState extends State<TaskPage> {
         Expanded(
           child: GestureDetector(
             child: Text(
-              task.feEvent,
+              task.event,
               style: TextStyle(
                 fontSize: 16,
                 color: Color.fromARGB(255, 112, 111, 111),
@@ -153,9 +153,9 @@ class _TaskPageState extends State<TaskPage> {
             },
           ),
         ),
-        for (var i = 0; i < task.feWeight; i++)
+        for (var i = 0; i < task.weight; i++)
           Icon(Icons.star, color: Color.fromARGB(255, 245, 166, 35)),
-        for (var i = 0; i < 4 - task.feWeight; i++)
+        for (var i = 0; i < 4 - task.weight; i++)
           Icon(Icons.star_border, color: Color.fromARGB(140, 245, 166, 35)),
       ],
     );

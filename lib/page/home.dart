@@ -23,14 +23,27 @@ class _AppPageState extends State<_AppPage> {
   var _scaffoldKey = GlobalKey<ScaffoldState>();
   Plan currentPlan;
   Task currentTask;
+  var evaluateMsg = '赶紧刷新查看你的专注程度吧！';
 
   @override
   void initState() {
     var userid = GlobalConfig.userId;
     if (GlobalConfig.isLogin)
       print('已登录');
-    else
+    else {
       print('未登录！');
+      Future.delayed(Duration(seconds: 1), () {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('请登录后使用本App！'),
+          action: SnackBarAction(
+            label: '登录',
+            onPressed: () {
+              Navigator.pushNamed(_context, UIRoute.login_page);
+            },
+          ),
+        ));
+      });
+    }
     super.initState();
   }
 
@@ -75,9 +88,11 @@ class _AppPageState extends State<_AppPage> {
         var score = await _Dialogs.showEvaluate(context);
         Toast.show(context, '你选择了$score分');
         if (score != null) {
-          var msg =
+          var map =
               await ScheduleUtils.selfEvaluation(GlobalConfig.userId, score);
-          _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(msg)));
+          _Dialogs.showResult(context, map['msg'], map['button']);
+          _scaffoldKey.currentState
+              .showSnackBar(SnackBar(content: Text(map['msg'])));
         }
       },
       child: Text('自我评价', style: TextStyle(color: Colors.white)),
@@ -88,7 +103,19 @@ class _AppPageState extends State<_AppPage> {
     return IconButton(
       icon: Icon(Icons.refresh),
       onPressed: () async {
-        await ScheduleUtils.getCurrentEvent(GlobalConfig.userId);
+        Response response =
+            await ScheduleUtils.getCurrentEvent(GlobalConfig.userId);
+        if (response.code == 200) {
+          _scaffoldKey.currentState
+              .showSnackBar(SnackBar(content: Text('获取到新的任务！')));
+        } else if (response.code == -1) {
+          currentPlan = null;
+          currentTask = null;
+          _scaffoldKey.currentState
+              .showSnackBar(SnackBar(content: Text('当日计划全部完成！')));
+        } else
+          _scaffoldKey.currentState
+              .showSnackBar(SnackBar(content: Text('刷新当前计划事项失败！')));
       },
     );
   }
@@ -279,7 +306,8 @@ abstract class _Dialogs {
     );
   }
 
-  static Future<void> showResult(BuildContext context) async {
+  static Future<void> showResult(
+      BuildContext context, String msg, String button) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -289,14 +317,15 @@ abstract class _Dialogs {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('根据昨日你的专注时长、打断次数和自我反馈，你的专注评分比以往平均水平有了进步！'),
+//                Text('根据昨日你的专注时长打断次数和自我反馈，你的专注评分比以往平均水平有了进步！'),
+                Text(msg),
               ],
             ),
           ),
           actions: <Widget>[
             FlatButton(
               child:
-                  Text('再接再厉', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(button, style: TextStyle(fontWeight: FontWeight.bold)),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -23,29 +23,56 @@ class _SchedulePageState extends State<SchedulePage>
   var _taskList = {};
   var _planList = {};
 
+  List<Task> get tasks {
+    var list = <Task>[];
+    for (var item in _taskList.values) {
+      list.add(item);
+    }
+    return list;
+  }
+
+  set tasks(List<Task> values) {
+    _taskList.clear();
+    for (var item in values) {
+      print(item);
+      _taskList[item.id] = item;
+    }
+  }
+
+  List<Plan> get plans {
+    var list = <Plan>[];
+    for (var item in _planList.values) {
+      list.add(item);
+    }
+    return list;
+  }
+
+  set plans(List<Plan> values) {
+    _planList.clear();
+    for (var item in values) {
+      print(item);
+      _planList[item.id] = item;
+    }
+  }
+
   @override
   void initState() {
     _tabController = TabController(length: widget.tabs.length, vsync: this);
     var tasks = <Task>[
-      Task(completed: true, feEvent: '整理读书笔记', feWeight: 3),
-      Task(completed: true, feEvent: '学英语', feWeight: 2),
-      Task(completed: false, feEvent: '艺术鉴赏', feWeight: 4),
-      Task(completed: false, feEvent: '专业学习', feWeight: 1),
+      Task(completed: true, event: '整理读书笔记', weight: 3),
+      Task(completed: true, event: '学英语', weight: 2),
+      Task(completed: false, event: '艺术鉴赏', weight: 4),
+      Task(completed: false, event: '专业学习', weight: 1),
     ];
     var plans = <Plan>[
       Plan(startTime: '7:30', endTime: '8:00', event: '起床、吃早餐'),
       Plan(startTime: '8:30', endTime: '9:30', event: '专注时间'),
       Plan(startTime: '11:30', endTime: '12:30', event: '午饭午休'),
       Plan(startTime: '17:30', endTime: '22:30', event: '专注时间'),
+      Plan(startTime: '22:30', endTime: '23:30', event: '上课'),
     ];
-    for (var item in tasks) {
-      print(item);
-      _taskList[item.id] = item;
-    }
-    for (var item in plans) {
-      print(item);
-      _planList[item.id] = item;
-    }
+    this.tasks = tasks;
+    this.plans = plans;
     super.initState();
   }
 
@@ -104,6 +131,9 @@ class _SchedulePageState extends State<SchedulePage>
           _taskList.values.toList(),
           _planList.values.toList(),
         );
+        var planList =
+            await ScheduleUtils.getTodaySchedule(GlobalConfig.userId);
+        if (planList.isNotEmpty) setState(() => this.plans = planList);
         Toast.show(context, response.info);
       },
     );
@@ -290,7 +320,7 @@ class _SchedulePageState extends State<SchedulePage>
         Expanded(
           child: GestureDetector(
             child: Text(
-              task.feEvent,
+              task.event,
               style: TextStyle(
                 fontSize: 16,
                 color: Color.fromARGB(255, 112, 111, 111),
@@ -317,9 +347,9 @@ class _SchedulePageState extends State<SchedulePage>
             },
           ),
         ),
-        for (var i = 0; i < task.feWeight; i++)
+        for (var i = 0; i < task.weight; i++)
           Icon(Icons.star, color: Color.fromARGB(255, 245, 166, 35)),
-        for (var i = 0; i < 4 - task.feWeight; i++)
+        for (var i = 0; i < 4 - task.weight; i++)
           Icon(Icons.star_border, color: Color.fromARGB(140, 245, 166, 35)),
       ],
     );

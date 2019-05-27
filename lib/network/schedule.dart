@@ -6,11 +6,11 @@ import 'package:smart_life_lw/utils/http.dart';
 class Task {
   String id;
   bool completed;
-  String feEvent;
-  int feWeight;
+  String event;
+  int weight;
   int interuptCount;
 
-  Task({this.id, this.completed, this.feEvent, this.feWeight}) {
+  Task({this.id, this.completed, this.event, this.weight}) {
     id = Uuid().v4();
     interuptCount = 0;
   }
@@ -23,22 +23,23 @@ class Task {
   Task.fromMap(Map map) {
     this.id = map.containsKey('id') ? map['id'] : Uuid().v4;
     this.completed = map['completed'];
-    this.feEvent = map['feEvent'];
-    this.feWeight = map['feWeight'];
+    this.event = map['event'];
+    this.weight = map['weight'];
     this.interuptCount = map['interuptCount'];
   }
 
   @override
   String toString() {
-    return '[Task:$id]complete: $completed, event: $feEvent, weight: $feWeight';
+    return '[Task:$id]complete: $completed, event: $event, weight: $weight';
   }
 
   Map toMap() {
     return {
       // 'id': id,
-      'completed': completed,
-      'feEvent': feEvent,
-      'feWeight': feWeight,
+//      'completed': completed,
+      'completed': 'false',
+      'event': event,
+      'weight': weight,
       'interuptCount': interuptCount,
     };
   }
@@ -68,9 +69,9 @@ class Plan {
 
   Plan.fromMap(Map map) {
     this.id = map.containsKey('id') ? map['id'] : Uuid().v4();
-    this.startTime = map['dseStartTime'];
-    this.endTime = map['dseEvent'];
-    this.event = map['dseEvent'];
+    this.startTime = map['startTime'];
+    this.endTime = map['endTime'];
+    this.event = map['event'];
   }
 
   @override
@@ -81,9 +82,9 @@ class Plan {
   Map toMap() {
     return {
       // 'id': id,
-      'dseStartTime': startTime,
-      'dseEndTime': endTime,
-      'dseEvent': event
+      'startTime': startTime,
+      'endTime': endTime,
+      'event': event
     };
   }
 
@@ -119,7 +120,7 @@ abstract class ScheduleUtils {
   }
 
   /// 获取每日计划
-  static Future<List> getTodaySchedule(int sessionId) async {
+  static Future<List<Plan>> getTodaySchedule(int sessionId) async {
     var url =
         'http://47.106.203.63:9091/timeadmin/getTodaySchedule?sessionId=$sessionId';
     var plans = <Plan>[];
@@ -132,13 +133,15 @@ abstract class ScheduleUtils {
           var plan = Plan.fromMap(item);
           if (item.containsKey('list')) {
             plan.hasChild = true;
-            for (Map task in item['list']) {
-              // plan.children.add(Task.fromMap(task));
-            }
+//            for (Map task in item['list']) {
+//               plan.children.add(Task.fromMap(task));
+//            }
           }
+          plans.add(plan);
         }
       }
     }
+    return plans;
   }
 
   /// 中断当前事件
@@ -150,15 +153,21 @@ abstract class ScheduleUtils {
   }
 
   /// 自我评分接口
-  static Future<String> selfEvaluation(int sessionId, int score) async {
+  static Future<Map<String, String>> selfEvaluation(
+      int sessionId, int score) async {
     var url =
         'http://47.106.203.63:9091/timeadmin/selfEvaluation?sessionId=$sessionId&score=$score';
     var responseStr = await get(url);
     var responseMap = jsonDecode(responseStr);
-    if (responseMap['code'] == 200)
-      return responseMap['data']['returnMsg'];
-    else
-      return responseMap['info'];
+    var returnMap = <String, String>{};
+    if (responseMap['code'] == 200) {
+      returnMap['msg'] = responseMap['data']['returnMsg'];
+      returnMap['button'] = responseMap['data']['button'];
+    } else {
+      returnMap['msg'] = responseMap['info'];
+      returnMap['button'] = '发生错误！';
+    }
+    return returnMap;
   }
 
   /// 更新每日计划
