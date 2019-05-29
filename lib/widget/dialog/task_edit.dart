@@ -102,6 +102,8 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
             min: 1,
             max: 4,
             divisions: 3,
+            activeColor: Colors.blue,
+            inactiveColor: Colors.blue[100],
             label: _task.weight.toString(),
             onChanged: (value) {
               setState(() {
@@ -109,6 +111,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
               });
             },
           ),
+          SimpleDivider(height: 10),
           Row(
             children: <Widget>[
               Expanded(child: Text('')),
