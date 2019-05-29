@@ -99,7 +99,7 @@ class _SchedulePageState extends State<SchedulePage>
     return Scaffold(
       appBar: AppBar(
         title: Text('我的计划'),
-        actions: <Widget>[_buildRefreshButton(context)],
+        actions: <Widget>[_buildDownloadButton(context),_buildUploadButton(context)],
       ),
       body: Column(
         children: <Widget>[
@@ -114,9 +114,21 @@ class _SchedulePageState extends State<SchedulePage>
     );
   }
 
-  Widget _buildRefreshButton(BuildContext context) {
+  Widget _buildDownloadButton(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.refresh),
+      icon: Icon(Icons.cloud_download),
+      onPressed: () async {
+        var planList =
+            await ScheduleUtils.getTodaySchedule(GlobalConfig.userId);
+        if (planList.isNotEmpty) setState(() => this.plans = planList);
+        Toast.show(context, '下载计划表～');
+      },
+    );
+  }
+
+  Widget _buildUploadButton(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.cloud_upload),
       onPressed: () async {
         switch (_tabController.index) {
           case 0: // 计划表
@@ -131,9 +143,6 @@ class _SchedulePageState extends State<SchedulePage>
           _taskList.values.toList(),
           _planList.values.toList(),
         );
-        var planList =
-            await ScheduleUtils.getTodaySchedule(GlobalConfig.userId);
-        if (planList.isNotEmpty) setState(() => this.plans = planList);
         Toast.show(context, response.info);
       },
     );

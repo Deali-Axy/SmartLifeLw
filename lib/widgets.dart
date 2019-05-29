@@ -182,7 +182,6 @@ class HomeDrawer extends StatelessWidget {
               child: Icon(Icons.timer),
             ),
             onTap: () {
-              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.focus_time);
             },
           ),
@@ -192,7 +191,6 @@ class HomeDrawer extends StatelessWidget {
               child: Icon(Icons.list),
             ),
             onTap: () {
-              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.task);
             },
           ),
@@ -202,7 +200,6 @@ class HomeDrawer extends StatelessWidget {
               child: Icon(Icons.chat),
             ),
             onTap: () {
-              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.chat);
             },
           ),
@@ -210,7 +207,6 @@ class HomeDrawer extends StatelessWidget {
             title: Text('汇智圈子'),
             leading: CircleAvatar(child: Icon(Icons.cloud_circle)),
             onTap: () {
-              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.circle);
             },
           ),
@@ -218,20 +214,10 @@ class HomeDrawer extends StatelessWidget {
             title: Text('Starter'),
             leading: CircleAvatar(child: Icon(Icons.star)),
             onTap: () {
-              Navigator.of(context).pop();
               Navigator.pushNamed(context, UIRoute.starter);
             },
           ),
           Divider(),
-//          ListTile(
-//            title: Text('new home'),
-//            onTap: () {
-//              Navigator.push(context,
-//                  MaterialPageRoute(builder: (BuildContext context) {
-//                    return NewHomePage();
-//                  }));
-//            },
-//          ),
           ListTile(
             title: Text('商城'),
             leading: CircleAvatar(child: Icon(Icons.local_mall)),

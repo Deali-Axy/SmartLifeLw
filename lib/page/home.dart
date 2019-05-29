@@ -108,6 +108,8 @@ class _AppPageState extends State<_AppPage> {
         if (response.code == 200) {
           _scaffoldKey.currentState
               .showSnackBar(SnackBar(content: Text('获取到新的任务！')));
+          print(response.data);
+          currentPlan = Plan.fromMap(response.data);
         } else if (response.code == -1) {
           currentPlan = null;
           currentTask = null;
@@ -116,6 +118,7 @@ class _AppPageState extends State<_AppPage> {
         } else
           _scaffoldKey.currentState
               .showSnackBar(SnackBar(content: Text('刷新当前计划事项失败！')));
+        setState(() {});
       },
     );
   }
