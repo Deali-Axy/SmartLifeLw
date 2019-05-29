@@ -69,6 +69,7 @@ class Response {
 }
 
 abstract class ScheduleUtils {
+  /// 获取当前事件
   static Future<Response> getCurrentEvent(int sessionId) async {
     var url =
         'http://47.106.203.63:9091/timeadmin/getCurrentEvent?sessionId=$sessionId';
@@ -85,6 +86,37 @@ abstract class ScheduleUtils {
     return response;
   }
 
+  /// 获取当日计划
+  static Future<void> getTodaySchedule(int sessionId) async {
+    var url =
+        'http://47.106.203.63:9091/timeadmin/getTodaySchedule?sessionId=$sessionId';
+    var responseStr = await get(url);
+    var responseMap = jsonDecode(responseStr);
+    return responseMap['info'];
+  }
+
+  /// 中断当前事件
+  static Future<String> interruptEvent(int sessionId) async {
+    var url =
+        'http://47.106.203.63:9091/timeadmin/interruptEvent?sessionId=$sessionId';
+    var responseStr = await get(url);
+    var responseMap = jsonDecode(responseStr);
+    return responseMap['info'];
+  }
+
+  /// 自我评分接口
+  static Future<String> selfEvaluation(int sessionId, int score) async {
+    var url =
+        'http://47.106.203.63:9091/timeadmin/selfEvaluation?sessionId=$sessionId&score=$score';
+    var responseStr = await get(url);
+    var responseMap = jsonDecode(responseStr);
+    if (responseMap['code'] == 200)
+      return responseMap['data']['returnMsg'];
+    else
+      return responseMap['info'];
+  }
+
+  /// 每日计划更新
   static Future<Response> updateDailySchedule(
       int sessionId, List tasks, List plans) async {
     var url = 'http://47.106.203.63:9091/timeadmin/updateDailySchedule';
@@ -101,25 +133,14 @@ abstract class ScheduleUtils {
     Response response;
     try {
       response = Response(
-          code: responseMap['code'],
-          info: responseMap['info'],
-          data: requestMap['data']);
+        code: responseMap['code'],
+        info: responseMap['info'],
+        data: requestMap['data'],
+      );
     } catch (exp) {
       response = Response(code: -1, info: '请求失败！');
     }
 
     return response;
-  }
-
-  /// 自我评分接口
-  static Future<String> selfEvaluation(int sessionId, int score) async {
-    var url =
-        'http://47.106.203.63:9091/timeadmin/selfEvaluation?sessionId=$sessionId&score=$score';
-    var responseStr = await get(url);
-    var responseMap = jsonDecode(responseStr);
-    if (responseMap['code'] == 200)
-      return responseMap['data']['returnMsg'];
-    else
-      return responseMap['info'];
   }
 }
