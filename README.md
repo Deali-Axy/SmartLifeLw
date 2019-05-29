@@ -1,16 +1,12 @@
-# smart_life_lw
+# 汇智Life
 
-A new Flutter project.
+## 更新日志
+### 2.0.0
+1. 全新逻辑
+2. 全新界面布局
+3. 智能规划算法上线
 
-## Getting Started
+**存在问题**
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+1. 网络请求部分仍不稳定，可能导致崩溃
+2. 智能推荐算法不稳定

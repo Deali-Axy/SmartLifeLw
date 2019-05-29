@@ -44,13 +44,13 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
     _action = action;
     if (action == TaskEditDialogAction.update && task != null) {
       _task = task;
-      _editingController = TextEditingController(text: _task.feEvent);
+      _editingController = TextEditingController(text: _task.event);
     }
     if (action == TaskEditDialogAction.add) {
-      _task = Task(completed: false, feEvent: '', feWeight: 1);
+      _task = Task(completed: false, event: '', weight: 1);
     }
 
-    _editingController = TextEditingController(text: _task.feEvent);
+    _editingController = TextEditingController(text: _task.event);
     _dialogResult = TaskEditDialogResult(_action, _task);
   }
 
@@ -76,15 +76,15 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
               hintText: '请输入专注事情',
               prefixIcon: Icon(Icons.event),
             ),
-            onSaved: (value) => _task.feEvent = value,
+            onSaved: (value) => _task.event = value,
           ),
           Divider(height: 20),
           Row(
             children: <Widget>[
               Expanded(child: Text('重要程度')),
-              for (var i = 1; i <= _task.feWeight; i++)
+              for (var i = 1; i <= _task.weight; i++)
                 Icon(Icons.star, color: Color.fromARGB(255, 245, 166, 35)),
-              for (var i = 1; i <= 4 - _task.feWeight; i++)
+              for (var i = 1; i <= 4 - _task.weight; i++)
                 Icon(Icons.star_border,
                     color: Color.fromARGB(255, 245, 166, 35)),
             ],
@@ -98,14 +98,14 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
             ),
           ),
           Slider(
-            value: _task.feWeight.toDouble(),
+            value: _task.weight.toDouble(),
             min: 1,
             max: 4,
             divisions: 3,
-            label: _task.feWeight.toString(),
+            label: _task.weight.toString(),
             onChanged: (value) {
               setState(() {
-                _task.feWeight = value.round();
+                _task.weight = value.round();
               });
             },
           ),
@@ -129,7 +129,7 @@ class _TaskEditDialogState extends State<TaskEditDialog> {
                 height: flatButtonHeight,
                 child: FlatButton(
                   onPressed: () {
-                    _task.feEvent = _editingController.text;
+                    _task.event = _editingController.text;
                     Navigator.of(context).pop(_dialogResult);
                   },
                   child: Text('确认'),
