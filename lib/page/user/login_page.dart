@@ -47,11 +47,12 @@ class _LoginPageState extends State<LoginPage> {
         .showSnackBar(SnackBar(content: Text(result.info)));
     if (result.code == 200) {
       Toast.show(_context, '登录成功！');
+      // 存储用户信息
       GlobalConfig.userId = result.data;
       result = await UserUtils.getUserInfo(result.data);
-      if (result.code == 200)
-        GlobalConfig.userInfo = result.data;
-      Navigator.pop(_context);
+      if (result.code == 200) GlobalConfig.userInfo = result.data;
+      // 跳转到主页
+      Navigator.pushReplacementNamed(context, UIRoute.home);
     }
   }
 

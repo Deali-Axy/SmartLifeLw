@@ -42,6 +42,7 @@ class _AppPageState extends State<_AppPage> {
             },
           ),
         ));
+        Navigator.pushReplacementNamed(_context, UIRoute.login_page);
       });
     }
     super.initState();

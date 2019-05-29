@@ -34,11 +34,12 @@ class _SignUpPageState extends State<SignUpPage> {
         .showSnackBar(SnackBar(content: Text(result.info)));
     if (result.code == 200) {
       Toast.show(_context, '注册成功～');
+      // 保存用户数据
       GlobalConfig.userId = result.data;
       result = await UserUtils.getUserInfo(result.data);
-      if (result.code == 200)
-        GlobalConfig.userInfo = result.data;
-      Navigator.pop(_context);
+      if (result.code == 200) GlobalConfig.userInfo = result.data;
+      // 跳转到主页
+      Navigator.pushReplacementNamed(context, UIRoute.home);
     }
   }
 
